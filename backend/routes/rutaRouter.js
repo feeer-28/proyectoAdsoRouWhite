@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const RutaController = require('../controllers/rutasController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const rutasController = require('../controllers/rutasController');
 
-router.get('/listar',RutaController.listarRutas);
-router.get('/:id', RutaController.buscarRutaPorId);
-router.post('/favoritos', RutaController.agregarRutaAFavoritos);
-router.delete('/favoritos',  RutaController.eliminarRutaFavoritos);
+router.post('/', rutasController.crearRuta);
+router.get('/', rutasController.listarRutas);
+
 
 module.exports = router;

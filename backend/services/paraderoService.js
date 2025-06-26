@@ -29,7 +29,7 @@ exports.crearParadero = async ({ nombre, latitud, longitud }) => {
   if (nombreTrim.length < 3 || nombreTrim.length > 100) {
     errores.push('El nombre debe tener entre 3 y 100 caracteres.');
   }
-   const existeNombre = await Paradero.findOne({
+  const existeNombre = await Paradero.findOne({
     where: where(fn('LOWER', col('nombre')), nombreTrim.toLowerCase())
   });
   if (existeNombre) {

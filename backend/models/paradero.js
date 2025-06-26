@@ -1,13 +1,17 @@
 'use strict';
 const { Model } = require('sequelize');
 
-
 module.exports = (sequelize, DataTypes) => {
   class Paradero extends Model {
     static associate(models) {
-      // asociaciones futuras
+      // asociacion ruta-paradero
+      Paradero.associate = models => {
+        Paradero.belongsTo(models.Ruta,{
+          through: models.ParaderoRuta,
+          foreignKey: 'paraderoId',
+        })
     }
-  }
+  }}
   Paradero.init({
     nombre: {
       type: DataTypes.STRING,
@@ -17,6 +21,17 @@ module.exports = (sequelize, DataTypes) => {
         len: {
           args: [3, 100],
           msg: 'El nombre debe tener entre 3 y 100 caracteres.'
+        }
+      }
+    },
+    direccion: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: 'La dirección no puede estar vacía.' },
+        len: {
+          args: [5, 200],
+          msg: 'La dirección debe tener entre 5 y 200 caracteres.'
         }
       }
     },
