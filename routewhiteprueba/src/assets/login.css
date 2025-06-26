@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Aplicar font-family globalmente dentro del wrapper */
+.login-wrapper, .login-wrapper * {
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.login-wrapper {
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #FEF3E2, #F3C623);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+/* Todo lo demás igual pero con prefijo .login-wrapper */
+.login-wrapper .container {
+  display: flex;
+  width: 900px;
+  height: 450px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.login-wrapper .left-panel {
+  flex: 1;
+  background: linear-gradient(135deg, #F3C623, #FA812F);
+  color: white;
+  padding: 60px 50px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-wrapper .left-panel h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.login-wrapper .left-panel p {
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 350px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-wrapper .left-panel::before {
+  content: '';
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle at center, #FFB22C, transparent);
+  border-radius: 50%;
+  top: 30px;
+  left: 30px;
+  opacity: .3;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.login-wrapper .left-panel::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 178, 44, .4),
+    rgba(255, 178, 44, .4) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  top: 0;
+  left: 0;
+  opacity: .15;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.login-wrapper .right-panel {
+  flex: 1;
+  background: #fff;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #FA812F;
+}
+
+.login-wrapper .right-panel h2 {
+  font-weight: 700;
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+  letter-spacing: 1.5px;
+}
+
+.login-wrapper form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-wrapper .input-group {
+  margin-bottom: 20px;
+}
+
+.login-wrapper input[type="text"],
+.login-wrapper input[type="password"],
+.login-wrapper input[type="email"],
+.login-wrapper input[type="tel"] {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 1rem;
+  color: #FA812F;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.login-wrapper input:focus {
+  border-color: #F3C623;
+}
+
+.login-wrapper button {
+  background: linear-gradient(90deg, #F3C623, #FA812F);
+  border: none;
+  border-radius: 20px;
+  padding: 12px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background .3s;
+}
+
+.login-wrapper button:hover {
+  opacity: 0.9;
+}
+
+.login-wrapper .small-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.3s, color 0.3s;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.login-wrapper .small-button:hover {
+  background-color: #fff;
+  color: #FA812F;
+}
+
+.login-wrapper .options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #FA812F;
+}
+
+.login-wrapper .options a {
+  color: #FA812F;
+  text-decoration: none;
+}
+
+.login-wrapper .options a:hover {
+  text-decoration: underline;
+}

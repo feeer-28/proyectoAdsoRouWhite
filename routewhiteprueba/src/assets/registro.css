@@ -1,0 +1,140 @@
+.registro-container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-panel {
+  flex: 1;
+  background: linear-gradient(to bottom right, #F3C623, #FA812F);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.left-panel h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.left-panel p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.button-container {
+  margin-top: 1rem;
+}
+
+.small-button {
+  padding: 0.6rem 1.5rem;
+  background: none;
+  border: 2px solid white;
+  color: white;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s;
+}
+
+.small-button:hover {
+  background: white;
+  color: #FA812F;
+}
+
+.right-panel {
+  flex: 1;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.right-panel h2 {
+  font-size: 2rem;
+  color: #FA812F;
+  margin-bottom: 1.5rem;
+}
+
+form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #F3C623;
+  background-color: #eef6ff;
+}
+
+.register-button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(to right, #F3C623, #FA812F);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.register-button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+  .registro-container {
+    flex-direction: column;
+  }
+
+  .left-panel, .right-panel {
+    flex: none;
+    width: 100%;
+  }
+
+  .left-panel {
+    padding: 1.5rem;
+  }
+
+  .right-panel {
+    padding: 1.5rem 1rem;
+  }
+
+  form {
+    max-width: 100%;
+  }
+}
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: block;
+}
+.success {
+  color: green;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: block;
+}
