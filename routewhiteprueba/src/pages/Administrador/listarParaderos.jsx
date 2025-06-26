@@ -9,7 +9,7 @@ const ListarParaderos = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('tokenAdmin');
-    fetch('http://localhost:3000/api/paraderos/listar', {
+    fetch('http://localhost:3000/api/paraderos/obtener', {
       headers: {
         Authorization: `Bearer ${token}`
       }
