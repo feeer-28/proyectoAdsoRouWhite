@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Empresa = sequelize.define('Empresa', {
     id: {
@@ -19,11 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     tableName: 'Empresas',
-    timestamps: false
+    modelName: 'Empresa',
+    timestamps: false // Cámbialo a true si luego quieres guardar createdAt/updatedAt
   });
 
   Empresa.associate = (models) => {
-    Empresa.hasMany(models.Ruta, { foreignKey: 'empresaId' });
+    Empresa.hasMany(models.Ruta, { foreignKey: 'empresaId', as: 'rutas' });
   };
 
   return Empresa;

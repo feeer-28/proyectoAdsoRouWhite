@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Ruta = sequelize.define('Ruta', {
     id: {
@@ -29,17 +31,27 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Empresas',  
+        model: 'Empresas',
         key: 'id'
       }
     }
   }, {
-    tableName: 'Ruta',
+    tableName: 'Rutas',
     timestamps: false
   });
 
   Ruta.associate = (models) => {
-    Ruta.belongsTo(models.Empresa, { foreignKey: 'empresaId' });
+    Ruta.belongsTo(models.Empresa, {
+      foreignKey: 'empresaId',
+      as: 'empresa'
+    });
+
+    Ruta.belongsToMany(models.Paradero, {
+      through: 'ParaderosRutas',
+      foreignKey: 'rutaId',
+      otherKey: 'paraderoId',
+      as: 'paraderos'
+    });
   };
 
   return Ruta;

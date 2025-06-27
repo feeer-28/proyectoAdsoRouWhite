@@ -4,17 +4,19 @@ const cors = require('cors');
 const app = express();
 const db = require('./models');
 const rutaRouter = require('./routes/rutaRouter');
-const usuarioRouter = require('./routes/usuarioRouter');
 const registerRouter = require('./routes/registerRouter');
 const paraderoRouter = require('./routes/paraderoRouter');
+const empresaRouter = require('./routes/empresaRouter');
+const rolRouter = require('./routes/rolRouter');
 
 app.use(cors());
 app.use(express.json());
 
 app.use('/api/rutas', rutaRouter);
-app.use('/api/usuarios', usuarioRouter);
 app.use('/api/register', registerRouter);
 app.use('/api/paraderos', paraderoRouter);
+app.use('/api/empresas', empresaRouter);
+app.use('/api/roles', rolRouter);
 
 db.sequelize.sync().then(() => {
   console.log('Base de datos sincronizada');

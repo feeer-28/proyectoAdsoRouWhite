@@ -12,6 +12,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      identificacion: {
+        type: Sequelize.STRING,
+        allowNull: true // Validación condicional por rol se hace en service
+      },
       correo: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -19,27 +23,31 @@ module.exports = {
       },
       telefono: {
         type: Sequelize.STRING,
-        allowNull: true,
-        validate: {
-          is: /^[0-9]+$/i, // Validación solo números
-          is: /^\d{10}$/ // Validación de 10 números
-        }
+        allowNull: true
       },
       contrasena: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      rol: {
-        type: Sequelize.ENUM('administrador', 'despachador', 'conductor', 'usuario'),
-        defaultValue: 'usuario'
+      rolId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Roles',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
       },
       createdAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },

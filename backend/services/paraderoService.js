@@ -2,11 +2,11 @@ const { Paradero } = require('../models');
 const { fn, col, where } = require('sequelize');
 
 
-exports.crearParadero = async ({ nombre, latitud, longitud }) => {
+exports.crearParadero = async ({ nombre,direccion, latitud, longitud }) => {
   const errores = [];
 
   // Validación campos vacíos
-  if (!nombre || latitud === '' || longitud === '') {
+  if (!nombre || direccion === '' || latitud === '' || longitud === '') {
     errores.push('Todos los campos son obligatorios.');
   }
 

@@ -5,7 +5,10 @@ const bcrypt = require('bcryptjs');
 module.exports = (sequelize, DataTypes) => {
   class Usuario extends Model {
     static associate(models) {
-      //asociar
+      Usuario.belongsTo(models.Rol, {
+        foreignKey: 'rolId',
+        as: 'rol'
+      });
     }
   }
 
@@ -13,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     nombre: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    identificacion: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     correo: {
       type: DataTypes.STRING,
@@ -27,23 +34,25 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     telefono: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-            is: /^[0-9]+$/i ,// Validación solo numbers
-            is: /^\d{10}$/ // validacion 10 numbers
-
-        }
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isNumeric: true,
+        len: [10, 10]
+      }
     },
-    rol: {
-      type: DataTypes.ENUM('administrador', 'despachador', 'conductor', 'usuario'),
-      defaultValue: 'usuario',
-      allowNull: false
+    rolId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Roles',
+        key: 'id'
+      }
     }
   }, {
     sequelize,
     modelName: 'Usuario',
-    tableName: 'Usuarios',
+    tableName: 'Usuarios'
   });
 
   return Usuario;

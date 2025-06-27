@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 function validarCorreo(correo) {
   return /^[a-zA-Z0-9._%+-]+@(gmail|hotmail|outlook)\.com$/.test(correo);
 }
+function validarIdentificacion(identificacion) {
+  return /^[0-9]{6,15}$/.test(identificacion);
+}
 
 function validarContrasena(contrasena) {
   return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/.test(contrasena);
@@ -14,9 +17,9 @@ function validartelefono(telefono) {
 }
 
 exports.registrarUsuario = async (data, rol) => {
-  const { nombre, correo, contrasena, telefono } = data;
+  const { nombre, correo, contrasena, telefono, identificacion } = data;
 
-  if (!nombre || !correo || !contrasena || !telefono) {
+  if (!nombre || !correo || !contrasena || !telefono || !identificacion) {
     throw new Error('Todos los campos son obligatorios');
   }
 
@@ -31,6 +34,9 @@ exports.registrarUsuario = async (data, rol) => {
   if (!validartelefono(telefono)) {
     throw new Error('El número de telefono debe tener 10 dígitos. No se permiten letras ni caracteres especiales');
   }
+  if (!validarIdentificacion(identificacion)) {
+    throw new Error('La identificación debe tener entre 6 y 15 dígitos numéricos, no se permiten letras ni caracteres especiales');
+  }
 
   const yaExiste = await Usuario.findOne({ where: { correo } });
   if (yaExiste) {
@@ -43,6 +49,7 @@ exports.registrarUsuario = async (data, rol) => {
   await Usuario.create({
     nombre,
     correo,
+    identificacion,
     contrasena: contrasenaHash,
     telefono,
     rol // se asigna automáticamente desde la ruta

@@ -2,7 +2,7 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Ruta', {
+    await queryInterface.createTable('Rutas', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -37,11 +37,21 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Ruta');
+  async down(queryInterface) {
+    await queryInterface.dropTable('Rutas');
   }
 };

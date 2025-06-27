@@ -4,24 +4,23 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Paradero extends Model {
     static associate(models) {
-      // asociacion ruta-paradero
-      Paradero.associate = models => {
-        Paradero.belongsTo(models.Ruta,{
-          through: models.ParaderoRuta,
-          foreignKey: 'paraderoId',
-        })
+      // Relación muchos a muchos con Ruta
+      Paradero.belongsToMany(models.Ruta, {
+        through: 'ParaderosRutas',
+        foreignKey: 'paraderoId',
+        otherKey: 'rutaId',
+        as: 'rutas'
+      });
     }
-  }}
+  }
+
   Paradero.init({
     nombre: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: { msg: 'El nombre no puede estar vacío.' },
-        len: {
-          args: [3, 100],
-          msg: 'El nombre debe tener entre 3 y 100 caracteres.'
-        }
+        len: [3, 100]
       }
     },
     direccion: {
@@ -29,17 +28,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: { msg: 'La dirección no puede estar vacía.' },
-        len: {
-          args: [5, 200],
-          msg: 'La dirección debe tener entre 5 y 200 caracteres.'
-        }
+        len: [5, 200]
       }
     },
     latitud: {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
-        isFloat: { msg: 'La latitud debe ser un número válido.' },
+        isFloat: true,
         min: -90,
         max: 90
       }
@@ -48,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
-        isFloat: { msg: 'La longitud debe ser un número válido.' },
+        isFloat: true,
         min: -180,
         max: 180
       }
@@ -58,6 +54,6 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Paradero',
     tableName: 'Paraderos'
   });
+
   return Paradero;
 };
-
