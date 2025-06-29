@@ -29,6 +29,10 @@ exports.crearParadero = async ({ nombre,direccion, latitud, longitud }) => {
   if (nombreTrim.length < 3 || nombreTrim.length > 100) {
     errores.push('El nombre debe tener entre 3 y 100 caracteres.');
   }
+  const direccionTrim = direccion.trim();
+  if (direccionTrim.length < 3 || direccionTrim.length > 100) {
+    errores.push('La dirección debe tener entre 3 y 100 caracteres.');
+  }
   const existeNombre = await Paradero.findOne({
     where: where(fn('LOWER', col('nombre')), nombreTrim.toLowerCase())
   });
@@ -58,6 +62,7 @@ exports.crearParadero = async ({ nombre,direccion, latitud, longitud }) => {
   try {
     const paradero = await Paradero.create({
       nombre: nombreTrim,
+      direccion: direccionTrim,
       latitud: lat,
       longitud: lon
     });

@@ -6,7 +6,6 @@ module.exports = {
       paraderoId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        primaryKey: true,
         references: {
           model: 'Paraderos',
           key: 'id'
@@ -17,7 +16,6 @@ module.exports = {
       rutaId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        primaryKey: true,
         references: {
           model: 'Rutas',
           key: 'id'
@@ -44,8 +42,12 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
+        await queryInterface.addConstraint('ParaderosRutas', {
+      fields: ['paraderoId', 'rutaId', 'tipo'],
+      type: 'unique',
+      name: 'unique_paradero_ruta_tipo'
+    });
   },
-
   down: async (queryInterface) => {
     await queryInterface.dropTable('ParaderosRutas');
   }
