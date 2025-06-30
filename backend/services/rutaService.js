@@ -1,4 +1,5 @@
 const { Ruta, Empresa, ParaderosRutas, Paradero } = require('../models');
+const { Op } = require('sequelize');
 
 exports.crearRuta = async ({
   nombre,
@@ -163,4 +164,61 @@ exports.obtenerRutaPorId = async (rutaId) => {
   }
 
   return ruta;
+};
+
+exports.actualizarRuta = async (rutaId, datos) => {
+  const ruta = await Ruta.findByPk(rutaId);
+  if (!ruta) {
+    throw new Error('Ruta no encontrada.');
+  }
+
+  const errores = [];
+
+  if (!datos.nombre || !datos.hora_inicio || !datos.hora_fin || !datos.empresaId) {
+    errores.push('Todos los campos obligatorios deben ser llenados.');
+  }
+
+  if (datos.nombre && datos.nombre.trim().length < 3) {
+    errores.push('El nombre debe tener al menos 3 caracteres.');
+  }
+
+  // Validar duplicado
+  const existe = await Ruta.findOne({
+    where: {
+      nombre: datos.nombre,
+      empresaId: datos.empresaId,
+      id: { [Op.ne]: rutaId }
+    }
+  });
+  if (existe) {
+    errores.push('Ya existe una ruta con ese nombre para esta empresa.');
+  }
+
+  if (errores.length > 0) {
+    const error = new Error('Error de validación.');
+    error.errores = errores;
+    throw error;
+  }
+
+  // Actualizar la ruta
+  ruta.nombre = datos.nombre.trim();
+  ruta.descripcion = datos.descripcion || '';
+  ruta.hora_inicio = datos.hora_inicio;
+  ruta.hora_fin = datos.hora_fin;
+  ruta.empresaId = datos.empresaId;
+
+  await ruta.save();
+
+  return ruta;
+};
+exports.eliminarRuta = async (rutaId) => {
+  const ruta = await Ruta.findByPk(rutaId);
+  if (!ruta) {
+    throw new Error('Ruta no encontrada.');
+  }
+
+  // Eliminar la ruta
+  await ruta.destroy();
+
+  return { mensaje: 'Ruta eliminada exitosamente.' };
 };
