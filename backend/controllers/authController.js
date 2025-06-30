@@ -1,22 +1,39 @@
-// controllers/authController.js
-
 const LoginService = require('../services/loginUsersService');
 const RegisterService = require('../services/registerUsersService');
 
-exports.registerWithRole = async (req, res, rol) => {
+exports.registerWithRole = async (req, res, rolFijo) => {
   try {
-    const resultado = await RegisterService.registrarUsuario(req.body, rol);
-    res.status(201).json({ mensaje: resultado });
+    const mensaje = await authService.registrarUsuario(req.body, rolFijo);
+    res.status(201).json({ mensaje });
   } catch (error) {
-    res.status(400).json({ mensaje: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
-exports.loginConRol = async (req, res, rol) => {
+// Registro realizado por el administrador (puede elegir conductor o despachador)
+exports.registerByAdmin = async (req, res) => {
   try {
-    const resultado = await LoginService.loginConRol(req.body, rol);
-    res.status(200).json(resultado);
+    const { rol } = req.body;
+
+    if (!rol || !['conductor', 'despachador'].includes(rol)) {
+      return res.status(400).json({
+        error: 'Rol inválido. Solo se puede registrar conductor o despachador.'
+      });
+    }
+
+    const mensaje = await authService.registrarUsuario(req.body, rol);
+    res.status(201).json({ mensaje });
   } catch (error) {
-    res.status(401).json({ mensaje: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
+
+exports.login = async (req, res) => {
+  try {
+    const resultado = await LoginService.login(req.body);
+    res.json(resultado);
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+};
+
