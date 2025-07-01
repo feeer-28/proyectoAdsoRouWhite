@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../assets/login.css'; // ✅ Usamos estilos del login
+import '../assets/login.css';
 
 const Registro = () => {
   const navigate = useNavigate();
   const [mensaje, setMensaje] = useState('');
+  const [mostrarContrasena, setMostrarContrasena] = useState(false);
+  const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+  const [errores, setErrores] = useState({});
 
   const [usuario, setUsuario] = useState({
     nombre: '',
@@ -17,14 +20,15 @@ const Registro = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUsuario((prev) => ({ ...prev, [name]: value }));
+    setUsuario(prev => ({ ...prev, [name]: value }));
+    setErrores(prev => ({ ...prev, [name]: '' }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (usuario.contrasena !== usuario.confirmarContrasena) {
-      setMensaje('Las contraseñas no coinciden');
+      setErrores({ confirmarContrasena: 'Las contraseñas no coinciden' });
       return;
     }
 
@@ -47,19 +51,30 @@ const Registro = () => {
       });
       navigate('/login');
     } catch (error) {
-      setMensaje(error.response?.data?.mensaje || 'Error al registrar');
+      const msg = error.response?.data?.mensaje;
+      const nuevosErrores = {};
+
+      if (msg?.includes('Correo')) {
+        nuevosErrores.email = msg;
+      } else if (msg?.includes('Contraseña')) {
+        nuevosErrores.contrasena = msg;
+      } else {
+        nuevosErrores.general = msg || 'Error al registrar';
+      }
+
+      setErrores(nuevosErrores);
     }
   };
 
   return (
     <div className="login-wrapper">
       <div className="container">
-        {/* ✅ Registro primero (izquierda) */}
         <div className="right-panel">
           <h2>Registro de Usuario</h2>
-          {mensaje && <p style={{ color: 'red', marginBottom: '10px' }}>{mensaje}</p>}
+          
           <form onSubmit={handleSubmit}>
             <div className="input-group">
+              <i className="fa-solid fa-user"></i>
               <input
                 type="text"
                 name="nombre"
@@ -71,6 +86,7 @@ const Registro = () => {
             </div>
 
             <div className="input-group">
+              <i className="fa-solid fa-phone"></i>
               <input
                 type="tel"
                 name="telefono"
@@ -82,6 +98,7 @@ const Registro = () => {
             </div>
 
             <div className="input-group">
+              <i className="fa-solid fa-envelope"></i>
               <input
                 type="email"
                 name="email"
@@ -90,35 +107,59 @@ const Registro = () => {
                 value={usuario.email}
                 onChange={handleChange}
               />
+              {errores.email && <small className="error">{errores.email}</small>}
             </div>
 
             <div className="input-group">
+              <i className="fa-solid fa-lock"></i>
+              {usuario.contrasena && (
+                <i
+                  className={`fa-solid ${mostrarContrasena ? 'fa-eye-slash' : 'fa-eye'} eye-toggle`}
+                  style={{ left: '40px', right: 'auto' }}
+                  onClick={() => setMostrarContrasena(prev => !prev)}
+                ></i>
+              )}
               <input
-                type="password"
+                type={mostrarContrasena ? 'text' : 'password'}
                 name="contrasena"
                 placeholder="Contraseña"
                 required
                 value={usuario.contrasena}
                 onChange={handleChange}
+                style={{ paddingLeft: '70px' }}
               />
+              {errores.contrasena && <small className="error">{errores.contrasena}</small>}
             </div>
 
             <div className="input-group">
+              <i className="fa-solid fa-lock"></i>
+              {usuario.confirmarContrasena && (
+                <i
+                  className={`fa-solid ${mostrarConfirmacion ? 'fa-eye-slash' : 'fa-eye'} eye-toggle`}
+                  style={{ left: '40px', right: 'auto' }}
+                  onClick={() => setMostrarConfirmacion(prev => !prev)}
+                ></i>
+              )}
               <input
-                type="password"
+                type={mostrarConfirmacion ? 'text' : 'password'}
                 name="confirmarContrasena"
                 placeholder="Confirmar contraseña"
                 required
                 value={usuario.confirmarContrasena}
                 onChange={handleChange}
+                style={{ paddingLeft: '70px' }}
               />
+              {errores.confirmarContrasena && (
+                <small className="error">{errores.confirmarContrasena}</small>
+              )}
             </div>
 
-            <button type="submit">Registrarse</button>
+            <button type="submit" className="register-button">Registrarse</button>
+            {errores.general && <p className="error">{errores.general}</p>}
+            {mensaje && <p className="mensaje-exito">{mensaje}</p>}
           </form>
         </div>
 
-        {/* ✅ Panel de bienvenida ahora a la derecha */}
         <div className="left-panel">
           <h1>¡Únete a nosotros!</h1>
           <p>Regístrate para disfrutar de todos nuestros beneficios.</p>

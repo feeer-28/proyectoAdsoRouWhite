@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../../assets/login.css';
-
+import { GoogleLogin } from '@react-oauth/google';
 
 const LoginAdministrador = () => {
   const navigate = useNavigate();
-  const [datos, setDatos] = useState({
-    correo: '',         
-    contrasena: ''        
-  });
-
+  const [datos, setDatos] = useState({ email: '', contrasena: '' });
   const [mensaje, setMensaje] = useState('');
+  const [mostrarContrasena, setMostrarContrasena] = useState(false);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,27 +17,23 @@ const LoginAdministrador = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensaje('');
-
     try {
-      const res = await fetch('http://localhost:3000/api/register/login/admin', {
+      const res = await fetch('http://localhost:3000/api/administradores/login', {
         method: 'POST',
-        headers: {
-           'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datos)
       });
-
       const data = await res.json();
-
-      if (res.ok) {
-          localStorage.setItem('tokenAdmin', data.token);
-        console.log("Usuario logueado:", data.usuario);
-        navigate('/administrador/dashboarAdmin'); 
+      if (data.token) {
+        localStorage.setItem('tokenAdmin', data.token);
+        navigate('/admin/dashboard');
       } else {
-        setMensaje(data.mensaje || 'Credenciales incorrectas');
+        setMensaje(data.msg || 'Credenciales incorrectas');
+        setMostrarModal(true);
       }
-    } catch (error) {
+    } catch {
       setMensaje('Error al conectar con el servidor');
+      setMostrarModal(true);
     }
   };
 
@@ -48,30 +42,76 @@ const LoginAdministrador = () => {
       <div className="container">
         <div className="right-panel">
           <h2>Login Administrador</h2>
-          {mensaje && <p style={{ color: 'red', marginBottom: '10px' }}>{mensaje}</p>}
+
           <form onSubmit={handleSubmit}>
             <div className="input-group">
+              <i className="fa-solid fa-envelope"></i>
               <input
                 type="email"
-                name="correo" // ✅ nombre correcto
+                name="email"
                 placeholder="Correo electrónico"
-                value={datos.correo}
+                value={datos.email}
                 onChange={handleChange}
                 required
               />
             </div>
+
             <div className="input-group">
+              <i className="fa-solid fa-lock"></i>
+              {datos.contrasena && (
+                <i
+                  className={`fa-solid ${mostrarContrasena ? 'fa-eye-slash' : 'fa-eye'} eye-toggle`}
+                  style={{ left: '40px', right: 'auto' }}
+                  onClick={() => setMostrarContrasena(prev => !prev)}
+                ></i>
+              )}
               <input
-                type="password"
-                name="contrasena" // ✅ nombre correcto
+                type={mostrarContrasena ? 'text' : 'password'}
+                name="contrasena"
                 placeholder="Contraseña"
                 value={datos.contrasena}
                 onChange={handleChange}
                 required
+                style={{ paddingLeft: '70px' }}
               />
             </div>
+
             <button type="submit">Iniciar sesión</button>
+
+            <p className="olvide">
+              <Link to="/recuperar-clave">¿Olvidaste tu contraseña?</Link>
+            </p>
           </form>
+           <div style={{ marginTop: '20px' }}>
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                try {
+                  const res = await fetch('http://localhost:3000/api/administradores/login-google', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token: credentialResponse.credential }),
+                  });
+                  const data = await res.json();
+                  if (data.token) {
+                    localStorage.setItem('tokenAdmin', data.token);
+                    navigate('/admin/dashboard');
+                  } else {
+                    setMensaje(data.msg || 'Error al iniciar sesión con Google');
+                    setMostrarModal(true);
+                  }
+                } catch {
+                  setMensaje('Error al conectar con el servidor (Google)');
+                  setMostrarModal(true);
+                }
+              }}
+              onError={() => {
+                setMensaje('Error al iniciar sesión con Google');
+                setMostrarModal(true);
+              }}
+            />
+          </div>
         </div>
 
         <div className="left-panel">
@@ -82,6 +122,17 @@ const LoginAdministrador = () => {
           </div>
         </div>
       </div>
+
+      {mostrarModal && (
+        <div className="modal-error">
+          <div className="modal-contenido">
+            <span className="icono-error">❌</span>
+            <h3>Error</h3>
+            <p>{mensaje}</p>
+            <button onClick={() => setMostrarModal(false)}>OK</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
