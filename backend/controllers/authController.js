@@ -1,16 +1,16 @@
-const LoginService = require('../services/loginUsersService');
-const RegisterService = require('../services/registerUsersService');
+const authService = require('../services/registerUsersService');
 
-exports.registerWithRole = async (req, res, rolFijo) => {
+// Ruta pública para registrar el primer administrador
+exports.registerAdmin = async (req, res) => {
   try {
-    const mensaje = await authService.registrarUsuario(req.body, rolFijo);
+    const mensaje = await authService.registrarUsuario(req.body, 'administrador');
     res.status(201).json({ mensaje });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Registro realizado por el administrador (puede elegir conductor o despachador)
+// Ruta protegida para que el admin cree conductores o despachadores
 exports.registerByAdmin = async (req, res) => {
   try {
     const { rol } = req.body;
@@ -27,13 +27,3 @@ exports.registerByAdmin = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
-exports.login = async (req, res) => {
-  try {
-    const resultado = await LoginService.login(req.body);
-    res.json(resultado);
-  } catch (error) {
-    res.status(401).json({ error: error.message });
-  }
-};
-
