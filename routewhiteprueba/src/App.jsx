@@ -8,10 +8,14 @@ import LoginAdministrador from "./pages/Administrador/loginAdministrador";
 import DashboardAdmin from './pages/Administrador/dashboarAdmin';
 import CrearParadero from "./pages/Administrador/crearParadero";
 import ListarParaderos from "./pages/Administrador/listarParaderos";
+import Nosotros from "./pages/Nosotros";
+import Contactos from "./pages/Contactos";
+import Header from "./components/header";
 
 function App() {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/rutas" element={<Rutas />} />
@@ -22,6 +26,8 @@ function App() {
         <Route path="/administrador/dashboarAdmin" element={<DashboardAdmin />} />
         <Route path="/administrador/crearParadero" element={<CrearParadero />} />
         <Route path="/administrador/listarParaderos" element={<ListarParaderos />} />
+        <Route path="/nosotros" element={<Nosotros />} />
+        <Route path="/contactos" element={<Contactos />} />
         
         {/* Puedes agregar más rutas aquí según sea necesario */}
       </Routes>

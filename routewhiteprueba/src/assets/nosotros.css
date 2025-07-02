@@ -1,0 +1,107 @@
+.nosotros-page {
+  background: #f7f8fa;
+  min-height: 100vh;
+  padding: 2.5rem 0 2rem 0;
+}
+.nosotros-title {
+  text-align: center;
+  font-size: 2.3rem;
+  color: #ff9800;
+  margin-bottom: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.nosotros-desc {
+  text-align: center;
+  font-size: 1.15rem;
+  color: #3a4a5a;
+  margin-bottom: 2.5rem;
+}
+.sobre-nosotros-valores {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.valor-card-glass {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(44, 83, 100, 0.13);
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  min-width: 220px;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s;
+  border-top: 5px solid #ff9800;
+}
+.valor-card-glass:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(44, 83, 100, 0.18);
+}
+.valor-icono {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  color: #ff9800;
+}
+.sobre-nosotros-subtitle {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #ff9800;
+  margin: 2.5rem 0 1.2rem 0;
+  font-weight: 700;
+}
+.sobre-nosotros-equipo {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.equipo-card-glass {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(44, 83, 100, 0.13);
+  padding: 1.2rem 1.2rem 1rem 1.2rem;
+  min-width: 180px;
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+.equipo-card-glass img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.7rem;
+  border: 3px solid #ff9800;
+}
+.equipo-card-glass h4 {
+  margin: 0.2rem 0 0.1rem 0;
+  font-size: 1.1rem;
+  color: #1a2a3a;
+  font-weight: 700;
+}
+.equipo-card-glass span {
+  color: #ff9800;
+  font-weight: 600;
+  font-size: 1rem;
+}
+@media (max-width: 900px) {
+  .sobre-nosotros-valores, .sobre-nosotros-equipo {
+    flex-direction: column;
+    align-items: center;
+  }
+  .valor-card-glass, .equipo-card-glass {
+    max-width: 95vw;
+    min-width: 0;
+    width: 100%;
+  }
+} 
