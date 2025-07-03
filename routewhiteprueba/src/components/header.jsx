@@ -1,74 +1,59 @@
-import { FaBus, FaHome, FaList, FaPlus } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "../assets/header.css";
 
-function Header() {
-  const [openMenu, setOpenMenu] = useState(null);
+function Logo() {
+  return (
+    <span className="header-logo-svg" aria-label="Logo RouWhite" role="img">
+      {/* SVG temporal */}
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="18" fill="#f97316"/>
+        <text x="50%" y="55%" textAnchor="middle" fill="#fff" fontSize="18" fontFamily="Arial" dy=".3em">RW</text>
+      </svg>
+    </span>
+  );
+}
 
-  const handleToggle = (index) => {
-    setOpenMenu(openMenu === index ? null : index);
-  };
+function Header() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setMenuOpen(false); // Cierra menú al cambiar de ruta
+  }, [location.pathname]);
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-logo">RouWhite</div>
-      <nav>
-        <ul>
-          <li>
-            <a href="#">
-              <span className="icon"><FaHome /></span>
-              <span className="label">Dashboard</span>
-            </a>
-          </li>
-
-          <li className={`menu-parent ${openMenu === 0 ? "open" : ""}`}>
-            <span className="menu-toggle" onClick={() => handleToggle(0)}>
-              <span className="icon"><FaBus /></span>
-              <span className="label">Rutas</span>
-            </span>
-            <ul className="submenu">
-              <li>
-                <a href="#"><span className="icon"><FaList /></span> Listar Rutas</a>
-              </li>
-              <li>
-                <a href="#"><span className="icon"><FaPlus /></span> Crear Ruta</a>
-              </li>
-            </ul>
-          </li>
-
-          <li className={`menu-parent ${openMenu === 1 ? "open" : ""}`}>
-            <span className="menu-toggle" onClick={() => handleToggle(1)}>
-              <span className="icon"><FaLocationDot /></span>
-              <span className="label">Paraderos</span>
-            </span>
-            <ul className="submenu">
-              <li>
-                <a href="#"><span className="icon"><FaList /></span> Listar Paraderos</a>
-              </li>
-              <li>
-                <a href="#"><span className="icon"><FaPlus /></span> Crear Paraderos</a>
-              </li>
-            </ul>
-          </li>
-
-          <li className={`menu-parent ${openMenu === 2 ? "open" : ""}`}>
-            <span className="menu-toggle" onClick={() => handleToggle(2)}>
-              <span className="icon"><FaLocationDot /></span>
-              <span className="label">Usuarios</span>
-            </span>
-            <ul className="submenu">
-              <li>
-                <a href="#"><span className="icon"><FaList /></span> Listado Usuarios</a>
-              </li>
-              <li>
-                <a href="#"><span className="icon"><FaPlus /></span> Crear Usuario</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+    <header className={`main-header${scrolled ? " scrolled" : ""}`}>
+      <div className="header-logo" style={{cursor:'pointer'}} onClick={() => { window.scrollTo({top:0,behavior:'smooth'}); if(location.pathname === '/') window.location.reload(); }}>
+        <Logo />
+        <span className="header-logo-text">ROUWHITE</span>
+      </div>
+      <nav className={`header-nav${menuOpen ? " open" : ""}`} aria-label="Navegación principal">
+        <Link to="/" className={location.pathname === "/" ? "active" : ""} onClick={e => { if(location.pathname === '/') { e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); window.location.reload(); } }}>INICIO</Link>
+        <Link to="/nosotros" className={location.pathname === "/nosotros" ? "active" : ""}>NOSOTROS</Link>
+        <Link to="/rutas" className={location.pathname === "/rutas" ? "active" : ""}>RUTAS</Link>
+        <Link to="/paradas" className={location.pathname === "/paradas" ? "active" : ""}>PARADAS</Link>
+        <Link to="/login" className={location.pathname === "/login" ? "active" : ""}>INICIAR SESIÓN</Link>
       </nav>
-    </aside>
+      <button
+        className="header-menu-toggle"
+        aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+        aria-expanded={menuOpen}
+        aria-controls="header-nav"
+        onClick={() => setMenuOpen(m => !m)}
+      >
+        <span className="header-menu-icon">{menuOpen ? "✖" : "☰"}</span>
+      </button>
+    </header>
   );
 }
 

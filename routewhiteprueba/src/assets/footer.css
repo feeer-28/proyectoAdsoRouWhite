@@ -1,6 +1,4 @@
-
 footer {
-
   color: #000000;
   text-align: center;
   padding: 1rem;
@@ -8,4 +6,70 @@ footer {
   font-size: 0.95rem;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+}
+
+.footer-pro {
+  background: var(--color-footer-bg, #23272f);
+  color: #fff;
+  padding: 2rem 1rem 1rem 1rem;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.footer-main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-logo {
+  font-weight: 900;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover, .footer-links a:focus {
+  color: var(--color-primary, #f97316);
+  outline: none;
+}
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.5rem;
+}
+
+.footer-social a {
+  color: #fff;
+  transition: color 0.2s;
+}
+
+.footer-social a:hover, .footer-social a:focus {
+  color: var(--color-primary, #f97316);
+  outline: none;
+}
+
+.footer-copy {
+  font-size: 0.95rem;
+  color: #bbb;
+  margin-top: 0.5rem;
 }
