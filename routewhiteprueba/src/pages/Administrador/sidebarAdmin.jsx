@@ -1,28 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../assets/dashboardAdmin.css";
+import "../../assets/sidebarAdminX.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export default function SidebarAdmin() {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState({
+    rutas: false,
+    paraderos: false,
+    usuarios: false
+  });
 
-  useEffect(() => {
-    const toggles = document.querySelectorAll(".menu-toggle");
-
-    function handleClick(e) {
-      e.currentTarget.parentElement.classList.toggle("open");
-    }
-
-    toggles.forEach((toggle) => {
-      toggle.addEventListener("click", handleClick);
-    });
-
-    return () => {
-      toggles.forEach((toggle) => {
-        toggle.removeEventListener("click", handleClick);
-      });
-    };
-  }, []);
+  const toggleMenu = (key) => {
+    setMenuOpen(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   return (
     <aside className="sidebar">
@@ -36,8 +27,8 @@ export default function SidebarAdmin() {
             </button>
           </li>
 
-          <li className="menu-parent">
-            <span className="menu-toggle">
+          <li className={`menu-parent ${menuOpen.rutas ? "open" : ""}`}>
+            <span className="menu-toggle" onClick={() => toggleMenu("rutas")}>
               <span className="icon"><i className="fa-solid fa-bus"></i></span>
               Rutas
             </span>
@@ -57,8 +48,8 @@ export default function SidebarAdmin() {
             </ul>
           </li>
 
-          <li className="menu-parent">
-            <span className="menu-toggle">
+          <li className={`menu-parent ${menuOpen.paraderos ? "open" : ""}`}>
+            <span className="menu-toggle" onClick={() => toggleMenu("paraderos")}>
               <span className="icon"><i className="fa-solid fa-location-dot"></i></span>
               Paraderos
             </span>
@@ -78,8 +69,8 @@ export default function SidebarAdmin() {
             </ul>
           </li>
 
-          <li className="menu-parent">
-            <span className="menu-toggle">
+          <li className={`menu-parent ${menuOpen.usuarios ? "open" : ""}`}>
+            <span className="menu-toggle" onClick={() => toggleMenu("usuarios")}>
               <span className="icon"><i className="fa-solid fa-users"></i></span>
               Usuarios
             </span>
