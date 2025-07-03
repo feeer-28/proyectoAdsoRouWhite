@@ -36,25 +36,7 @@ const CrearRuta = () => {
   // Opciones predefinidas para los puntos
   const opcionesPuntos = [
     'Barrio Bolívar',
-    'Barrio El Recuerdo',
-    'Barrio La Esmeralda',
-    'Barrio Bello Horizonte',
-    'Barrio Pandiguando',
-    'Barrio José María Obando',
-    'Barrio Los Campos',
-    'Barrio Valencia',
-    'Barrio La Paz',
-    'Barrio Alfonso López',
-    'Barrio Villa del Norte',
-    'Barrio Loma de la Virgen',
-    'Barrio Tomás Cipriano',
-    'Barrio Las Guacas',
-    'Barrio La Sombrera',
-    'Barrio María Oriente',
-    'Barrio Bello Horizonte II',
-    'Barrio El Cadillal',
-    'Barrio Las Américas',
-    'Barrio Santa Clara'
+    
   ];
 
   // Opciones de empresas (puedes cargar esto desde el backend)
