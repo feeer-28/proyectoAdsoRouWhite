@@ -1,0 +1,21 @@
+.rw-btn {
+  background: var(--color-primary, #f97316);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7em 1.5em;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  outline: none;
+}
+.rw-btn:hover, .rw-btn:focus {
+  background: var(--color-primary-dark, #d65a00);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+}
+.rw-btn:active {
+  background: #b94d00;
+} 

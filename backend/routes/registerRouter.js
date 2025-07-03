@@ -2,25 +2,19 @@ const express = require('express');
 const router = express.Router();
 const AuthController = require('../controllers/authController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const verificarAdmin = require('../middlewares/verificarAdmin');
 
-// Registro por rol
-router.post('/admin', (req, res) => AuthController.registerWithRole(req, res, 'administrador'));
-router.post('/conductor', (req, res) => AuthController.registerWithRole(req, res, 'conductor'));
-router.post('/despachador', (req, res) => AuthController.registerWithRole(req, res, 'despachador'));
-router.post('/usuario', (req, res) => AuthController.registerWithRole(req, res, 'usuario'));
+// Ruta pública para registrar el primer administrador
+router.post('/admin', AuthController.registerAdmin);
 
-// Login por rol
-router.post('/login/admin', (req, res) => AuthController.loginConRol(req, res, 'administrador'));
-router.post('/login/conductor', (req, res) => AuthController.loginConRol(req, res, 'conductor'));
-router.post('/login/despachador', (req, res) => AuthController.loginConRol(req, res, 'despachador'));
-router.post('/login/usuario', (req, res) => AuthController.loginConRol(req, res, 'usuario'));
+// Ruta pública para registro de usuario normal
+router.post('/register/usuario', (req, res) =>
+  AuthController.registerWithRole(req, res, 'usuario')
+);
 
-// Ruta protegida para el panel del administrador prueba
-router.get('/admin/dashboard', authMiddleware, (req, res) => {
-  res.json({
-    mensaje: 'Bienvenido al panel del administrador',
-    usuario: req.usuario // lo extrae del token decodificado
-  });
-});
+// Ruta protegida para que el admin registre conductores o despachadores
+router.post('/register/gestion', authMiddleware, verificarAdmin, (req, res) =>
+  AuthController.registerByAdmin(req, res)
+);
 
 module.exports = router;

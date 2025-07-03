@@ -7,12 +7,14 @@
   font-family: 'Roboto', sans-serif;
 }
 
-body, html {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+body {
+  background-color: #f8f4e7;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
 }
-
 
 .container {
   display: flex;
@@ -60,7 +62,7 @@ body, html {
   left: 30px;
   opacity: .3;
   z-index: 0;
-  pointer-events: none; /* Para que no bloquee clics */
+  pointer-events: none;
 }
 
 .left-panel::after {
@@ -79,7 +81,7 @@ body, html {
   left: 0;
   opacity: .15;
   z-index: 0;
-  pointer-events: none; /* Para que no bloquee clics */
+  pointer-events: none;
 }
 
 .right-panel {
@@ -106,6 +108,7 @@ form {
 
 .input-group {
   margin-bottom: 20px;
+  position: relative;
 }
 
 input[type="text"],
@@ -155,8 +158,8 @@ button:hover {
   font-size: 0.9rem;
   transition: background-color 0.3s, color 0.3s;
   text-align: center;
-  position: relative; /* ✅ Para que respete el z-index */
-  z-index: 10;         /* ✅ Para que quede por encima de decoraciones */
+  position: relative;
+  z-index: 10;
 }
 
 .small-button:hover {
@@ -180,20 +183,6 @@ button:hover {
 .options a:hover {
   text-decoration: underline;
 }
-  
-#root {
-  min-height: 100vh;
-  background-color: #f8f4e7; /* tono suave y uniforme */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-}
-
-.input-group {
-  margin-bottom: 20px;
-  position: relative;
-}
 
 .input-group i.fa-solid {
   position: absolute;
@@ -201,14 +190,24 @@ button:hover {
   left: 14px;
   transform: translateY(-50%);
   color: #FA812F;
-  font-size: 0.85rem; /* 👈 tamaño ajustado pero legible */
+  font-size: 0.85rem;
   z-index: 1;
 }
 
+.eye-toggle {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: #FA812F;
+  cursor: pointer;
+  z-index: 2;
+}
 
 .input-group input {
   width: 100%;
-  padding: 7px 12px 7px 40px; /* 👈 Menos alto y más limpio */
+  padding: 7px 12px 7px 40px;
   border-radius: 14px;
   font-size: 0.88rem;
 }
@@ -216,13 +215,14 @@ button:hover {
 .input-group input:focus {
   border-color: #F3C623;
 }
+
 .modal-error {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* fondo difuminado */
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -273,7 +273,6 @@ button:hover {
   color: #c53030;
 }
 
-/* 🎬 animación opcional de entrada */
 @keyframes entrada {
   from {
     opacity: 0;
@@ -284,4 +283,18 @@ button:hover {
     transform: scale(1);
   }
 }
+.left-panel {
+  flex: 0.9;
+}
 
+.right-panel {
+  flex: 1.1;
+}
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f4e7;
+  padding: 40px;
+}

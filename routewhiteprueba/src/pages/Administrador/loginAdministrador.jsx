@@ -5,7 +5,7 @@ import { GoogleLogin } from '@react-oauth/google';
 
 const LoginAdministrador = () => {
   const navigate = useNavigate();
-  const [datos, setDatos] = useState({ email: '', contrasena: '' });
+  const [datos, setDatos] = useState({ correo: '', contrasena: '' });
   const [mensaje, setMensaje] = useState('');
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -18,11 +18,13 @@ const LoginAdministrador = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:3000/api/administradores/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-      });
+      // 👇 Esta es la corrección en handleSubmit
+        const res = await fetch('http://localhost:3000/api/login/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datos)
+        });
+
       const data = await res.json();
       if (data.token) {
         localStorage.setItem('tokenAdmin', data.token);
@@ -48,9 +50,9 @@ const LoginAdministrador = () => {
               <i className="fa-solid fa-envelope"></i>
               <input
                 type="email"
-                name="email"
+                name="correo"
                 placeholder="Correo electrónico"
-                value={datos.email}
+                value={datos.correo}
                 onChange={handleChange}
                 required
               />
@@ -82,15 +84,14 @@ const LoginAdministrador = () => {
               <Link to="/recuperar-clave">¿Olvidaste tu contraseña?</Link>
             </p>
           </form>
-           <div style={{ marginTop: '20px' }}>
+
+          <div style={{ marginTop: '20px' }}>
             <GoogleLogin
               onSuccess={async (credentialResponse) => {
                 try {
                   const res = await fetch('http://localhost:3000/api/administradores/login-google', {
                     method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ token: credentialResponse.credential }),
                   });
                   const data = await res.json();

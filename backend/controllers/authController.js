@@ -1,22 +1,29 @@
-// controllers/authController.js
+const authService = require('../services/registerUsersService');
 
-const LoginService = require('../services/loginUsersService');
-const RegisterService = require('../services/registerUsersService');
-
-exports.registerWithRole = async (req, res, rol) => {
+// Ruta pública para registrar el primer administrador
+exports.registerAdmin = async (req, res) => {
   try {
-    const resultado = await RegisterService.registrarUsuario(req.body, rol);
-    res.status(201).json({ mensaje: resultado });
+    const mensaje = await authService.registrarUsuario(req.body, 'administrador');
+    res.status(201).json({ mensaje });
   } catch (error) {
-    res.status(400).json({ mensaje: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
-exports.loginConRol = async (req, res, rol) => {
+// Ruta protegida para que el admin cree conductores o despachadores
+exports.registerByAdmin = async (req, res) => {
   try {
-    const resultado = await LoginService.loginConRol(req.body, rol);
-    res.status(200).json(resultado);
+    const { rol } = req.body;
+
+    if (!rol || !['conductor', 'despachador'].includes(rol)) {
+      return res.status(400).json({
+        error: 'Rol inválido. Solo se puede registrar conductor o despachador.'
+      });
+    }
+
+    const mensaje = await authService.registrarUsuario(req.body, rol);
+    res.status(201).json({ mensaje });
   } catch (error) {
-    res.status(401).json({ mensaje: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
