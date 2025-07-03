@@ -10,7 +10,7 @@ import CrearParadero from "./pages/Administrador/crearParadero";
 import ListarParaderos from "./pages/Administrador/listarParaderos";
 import Nosotros from "./pages/Nosotros";
 import Contactos from "./pages/Contactos";
-import Header from "./components/header";
+import Header from "./components/Header";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
