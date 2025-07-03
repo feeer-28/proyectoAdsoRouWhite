@@ -25,7 +25,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro-administrador" element={<RegistroAdministrador rol="admin" />} />
           <Route path="/login-administrador" element={<LoginAdministrador />} />
-          <Route path="/administrador/dashboarAdmin" element={<DashboardAdmin />} />
+          <Route path="/admin/dashboard" element={<DashboardAdmin />} />
           <Route path="/administrador/crearParadero" element={<CrearParadero />} />
           <Route path="/administrador/listarParaderos" element={<ListarParaderos />} />
           <Route path="/nosotros" element={<Nosotros />} />

@@ -1,10 +1,11 @@
-<<<<<<< HEAD
+
 header {
   background: linear-gradient(90deg, #0f2027, #2c5364);
   color: #fff;
   padding: 0;
   box-shadow: 0 4px 24px rgba(44, 83, 100, 0.10);
-=======
+}
+
 :root {
   --sidebar-bg: #fa812f;
   --sidebar-text: #fef3e2;
@@ -15,7 +16,7 @@ header {
   --submenu-hover: #ffb22c;
   --text-dark: #2c3e50;
   --text-light: #7f8c8d;
->>>>>>> 15d6b33 (yes)
+
 }
 
 * {
@@ -45,7 +46,6 @@ body {
   padding-top: 20px;
   box-shadow: 2px 0 16px rgba(0, 0, 0, 0.08);
   display: flex;
-<<<<<<< HEAD
   align-items: center;
   gap: 0.7rem;
 }
@@ -86,8 +86,7 @@ body {
   color: #f97316;
   border: 2px solid #fff;
   padding: 0.18rem 0.65rem;
-  border-radius: 16px;
-=======
+
   flex-direction: column;
   transition: width 0.3s;
   z-index: 10;
@@ -95,7 +94,7 @@ body {
 
 .sidebar-logo {
   font-size: 24px;
->>>>>>> 15d6b33 (yes)
+
   font-weight: bold;
   text-align: center;
   padding-bottom: 20px;
@@ -164,7 +163,7 @@ body {
   border-radius: 0 0 8px 8px;
 }
 
-<<<<<<< HEAD
+
 /* Navegación */
 .main-nav {
   display: flex;
@@ -218,10 +217,12 @@ body {
     flex-wrap: wrap;
     margin-left: 0;
   }
-  .main-nav a {
-    font-size: 1rem;
-    padding: 0.6rem 1rem;
-=======
+    .main-nav a {
+      font-size: 1rem;
+      padding: 0.6rem 1rem;
+    }
+  }
+
 .menu-parent.open .submenu {
   max-height: 200px;
 }
@@ -272,7 +273,7 @@ body {
     content: "R";
     font-size: 22px;
     color: white;
->>>>>>> 15d6b33 (yes)
+
   }
   .logo-text {
     font-size: 1.3rem;
@@ -282,7 +283,7 @@ body {
   }
 }
 
-<<<<<<< HEAD
+
 .main-header {
   background: var(--color-primary, #f97316);
   padding: 1rem 2rem;
@@ -362,13 +363,13 @@ body {
   }
   .header-menu-toggle {
     display: block;
-=======
+  }
+
   .label {
     display: none;
   }
 
   .submenu li a {
     padding-left: 36px;
->>>>>>> 15d6b33 (yes)
   }
 }

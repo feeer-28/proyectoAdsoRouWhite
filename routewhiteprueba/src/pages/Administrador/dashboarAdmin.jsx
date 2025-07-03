@@ -10,7 +10,7 @@ export default function DashboardRouWhite() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("tokenAdmin"); // ← aquí está el único cambio
 
     if (!token) {
       navigate("/login"); 
@@ -116,7 +116,7 @@ export default function DashboardRouWhite() {
               </thead>
               <tbody>
                 {rutas
-                  .filter(r => r.activa) // Asumiendo que cada ruta tiene un campo 'activa'
+                  .filter(r => r.activa)
                   .map((ruta, index) => (
                     <tr key={index}>
                       <td>{ruta.id}</td>
