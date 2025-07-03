@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../assets/dashboardAdmin.css";
-import Header from "../../components/Header";
+import Header from "../../components/header";
 
 export default function DashboardRouWhite() {
   const [open, setOpen] = useState(false);

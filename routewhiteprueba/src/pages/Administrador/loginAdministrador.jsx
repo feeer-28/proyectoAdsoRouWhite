@@ -28,7 +28,7 @@ const LoginAdministrador = () => {
       const data = await res.json();
       if (data.token) {
         localStorage.setItem('tokenAdmin', data.token);
-        navigate('/admin/dashboard');
+        navigate('');
       } else {
         setMensaje(data.msg || 'Credenciales incorrectas');
         setMostrarModal(true);
