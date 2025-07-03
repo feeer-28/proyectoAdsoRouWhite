@@ -30,7 +30,7 @@ const RegistroAdministrador = ({ rol }) => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:3000/api/register/${rol}`, formulario);
+      const response = await axios.post(`http://localhost:3000/api/register/admin`, formulario);
 
       alert(response.data.mensaje || 'Registro exitoso');
 

@@ -22,7 +22,7 @@ const LoginAdministrador = () => {
     setMensaje('');
 
     try {
-      const res = await fetch('http://localhost:3000/api/register/login/admin', {
+      const res = await fetch('http://localhost:3000/api/admin', {
         method: 'POST',
         headers: {
            'Content-Type': 'application/json' },

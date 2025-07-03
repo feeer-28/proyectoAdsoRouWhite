@@ -7,24 +7,41 @@ export default function DashboardRouWhite() {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [rutas, setRutas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     if (!token) {
-      navigate("/login"); 
+      navigate("/login");
       return;
     }
 
-    fetch("http://localhost:3000/api/register/admin/dashboard", {
+    fetch("http://localhost:3000/api/register/admin", {
       headers: {
-        Authorization: `Bearer ${token}`
+        // Authorization: `Bearer ${token}`,
       }
     })
       .then((res) => res.json())
-      .then((data) => setRutas(data))
-      .catch((err) => console.error("Error al obtener rutas:", err));
+      .then((data) => {
+        // Depura la respuesta en consola
+        console.log("Respuesta rutas:", data);
+        // Si data no es un array, ajusta aquí según tu backend
+        if (Array.isArray(data)) {
+          setRutas(data);
+        } else if (Array.isArray(data.rutas)) {
+          setRutas(data.rutas);
+        } else {
+          setError("No se encontraron rutas.");
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError("Error al obtener rutas");
+        setLoading(false);
+        console.error("Error al obtener rutas:", err);
+      });
   }, [navigate]);
 
   useEffect(() => {
@@ -74,97 +91,111 @@ export default function DashboardRouWhite() {
       </div>
 
       <main className="dashboard-main">
-        <section className="stats-cards">
-          <div className="card purple">
-            <div className="card-icon">🔵</div>
-            <div className="card-value">{rutas.length}</div><span>Total Rutas</span>
-          </div>
-          <div className="card blue">
-            <div className="card-icon">🟢</div>
-            <div className="card-value">{rutas.filter(r => r.activa).length}</div><span>Rutas Activas</span>
-          </div>
-          <div className="card yellow">
-            <div className="card-icon">🟡</div>
-            <div className="card-value">{rutas.filter(r => !r.activa).length}</div><span>Rutas Inactivas</span>
-          </div>
-          <div className="card red">
-            <div className="card-icon">🔴</div>
-            <div className="card-value">20</div><span>Incidencias</span>
-          </div>
-        </section>
+        {loading ? (
+          <div style={{ textAlign: "center", margin: "2rem" }}>Cargando rutas...</div>
+        ) : error ? (
+          <div style={{ color: "red", textAlign: "center", margin: "2rem" }}>{error}</div>
+        ) : (
+          <>
+            <section className="stats-cards">
+              <div className="card purple">
+                <div className="card-icon">🔵</div>
+                <div className="card-value">{rutas.length}</div><span>Total Rutas</span>
+              </div>
+              <div className="card blue">
+                <div className="card-icon">🟢</div>
+                <div className="card-value">{rutas.filter(r => r.activa).length}</div><span>Rutas Activas</span>
+              </div>
+              <div className="card yellow">
+                <div className="card-icon">🟡</div>
+                <div className="card-value">{rutas.filter(r => !r.activa).length}</div><span>Rutas Inactivas</span>
+              </div>
+              <div className="card red">
+                <div className="card-icon">🔴</div>
+                <div className="card-value">20</div><span>Incidencias</span>
+              </div>
+            </section>
 
-        <div className="dashboard-grid">
-          <div className="dashboard-box">
-            <h3>Rutas Activas</h3>
-            <img
-              src="https://img.freepik.com/vector-premium/mapa-ruta-punteros-estilo-plano_23-2147789377.jpg"
-              alt="Mapa de rutas"
-              className="dashboard-map"
-            />
-          </div>
+            <div className="dashboard-grid">
+              <div className="dashboard-box">
+                <h3>Rutas Activas</h3>
+                <img
+                  src="https://img.freepik.com/vector-premium/mapa-ruta-punteros-estilo-plano_23-2147789377.jpg"
+                  alt="Mapa de rutas"
+                  className="dashboard-map"
+                />
+              </div>
 
-          <div className="dashboard-box">
-            <h3>Rutas Activas</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Ruta</th>
-                  <th>Origen</th>
-                  <th>Destino</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {rutas
-                  .filter(r => r.activa) // Asumiendo que cada ruta tiene un campo 'activa'
-                  .map((ruta, index) => (
-                    <tr key={index}>
-                      <td>{ruta.id}</td>
-                      <td>{ruta.origen}</td>
-                      <td>{ruta.destino}</td>
-                      <td><a href="#">Ver</a></td>
+              <div className="dashboard-box">
+                <h3>Rutas Activas</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Ruta</th>
+                      <th>Origen</th>
+                      <th>Destino</th>
+                      <th></th>
                     </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
+                  </thead>
+                  <tbody>
+                    {rutas.filter(r => r.activa).length === 0 ? (
+                      <tr>
+                        <td colSpan="4">No hay rutas activas</td>
+                      </tr>
+                    ) : (
+                      rutas
+                        .filter(r => r.activa)
+                        .map((ruta, index) => (
+                          <tr key={index}>
+                            <td>{ruta.id}</td>
+                            <td>{ruta.origen}</td>
+                            <td>{ruta.destino}</td>
+                            <td><a href="#">Ver</a></td>
+                          </tr>
+                        ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
 
-          <div className="dashboard-box">
-            <h3>Incidencias</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Ruta</th>
-                  <th>Vehículo</th>
-                  <th>Incidencia</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>10</td><td>Bus 207</td><td>Retraso</td></tr>
-                <tr><td>2</td><td>Truck 312</td><td>Avería</td></tr>
-                <tr><td>9</td><td>Van 125</td><td>Tráfico</td></tr>
-                <tr><td>7</td><td>Bus 224</td><td>Accidente</td></tr>
-              </tbody>
-            </table>
-          </div>
+              <div className="dashboard-box">
+                <h3>Incidencias</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Ruta</th>
+                      <th>Vehículo</th>
+                      <th>Incidencia</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>10</td><td>Bus 207</td><td>Retraso</td></tr>
+                    <tr><td>2</td><td>Truck 312</td><td>Avería</td></tr>
+                    <tr><td>9</td><td>Van 125</td><td>Tráfico</td></tr>
+                    <tr><td>7</td><td>Bus 224</td><td>Accidente</td></tr>
+                  </tbody>
+                </table>
+              </div>
 
-          <div className="dashboard-box">
-            <h3>Estado de Vehículos</h3>
-            <div className="dashboard-pie">
-              <svg width="100" height="100" viewBox="0 0 32 32">
-                <circle r="16" cx="16" cy="16" fill="#FEF3E2" />
-                <circle r="16" cx="16" cy="16" fill="none" stroke="#F3C623" strokeWidth="8" strokeDasharray="43 57" strokeDashoffset="0" />
-                <circle r="16" cx="16" cy="16" fill="none" stroke="#FFB22C" strokeWidth="8" strokeDasharray="13 87" strokeDashoffset="-43" />
-                <circle r="16" cx="16" cy="16" fill="none" stroke="#FA812F" strokeWidth="8" strokeDasharray="10 90" strokeDashoffset="-56" />
-              </svg>
-              <ul>
-                <li><span style={{ color: "#F3C623" }}>●</span> Operativos 68%</li>
-                <li><span style={{ color: "#FFB22C" }}>●</span> Mantenimiento 20%</li>
-                <li><span style={{ color: "#FA812F" }}>●</span> Inactivos 16%</li>
-              </ul>
+              <div className="dashboard-box">
+                <h3>Estado de Vehículos</h3>
+                <div className="dashboard-pie">
+                  <svg width="100" height="100" viewBox="0 0 32 32">
+                    <circle r="16" cx="16" cy="16" fill="#FEF3E2" />
+                    <circle r="16" cx="16" cy="16" fill="none" stroke="#F3C623" strokeWidth="8" strokeDasharray="43 57" strokeDashoffset="0" />
+                    <circle r="16" cx="16" cy="16" fill="none" stroke="#FFB22C" strokeWidth="8" strokeDasharray="13 87" strokeDashoffset="-43" />
+                    <circle r="16" cx="16" cy="16" fill="none" stroke="#FA812F" strokeWidth="8" strokeDasharray="10 90" strokeDashoffset="-56" />
+                  </svg>
+                  <ul>
+                    <li><span style={{ color: "#F3C623" }}>●</span> Operativos 68%</li>
+                    <li><span style={{ color: "#FFB22C" }}>●</span> Mantenimiento 20%</li>
+                    <li><span style={{ color: "#FA812F" }}>●</span> Inactivos 16%</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </main>
     </div>
   );
