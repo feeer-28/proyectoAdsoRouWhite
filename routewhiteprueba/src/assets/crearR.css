@@ -1,0 +1,313 @@
+/* src/assets/crearR.css */
+
+/*——————————————————*/
+/*  Variables & Base  */
+/*——————————————————*/
+
+:root {
+  /* Palette */
+  --clr-primary: #4a90e2;
+  --clr-secondary: #f5a623;
+  --clr-bg: #f2f7ff;
+  --clr-surface: #ffffff;
+  --clr-text: #333333;
+  --clr-error: #e95555;
+  --clr-success: #2a9d8f;
+  --clr-border: #d1d9e6;
+
+  /* Spacing */
+  --space-s: 0.5rem;
+  --space-m: 1rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+
+  /* Typography */
+  --font-base: "Inter", sans-serif;
+  --fs-base: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-lg: 1.25rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+  --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-base);
+  font-size: var(--fs-base);
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+}
+
+/*——————————————————*/
+/*  Page Layout       */
+/*——————————————————*/
+
+.crear-ruta-page {
+  display: flex;
+  min-height: 100vh;
+  background: var(--clr-bg);
+}
+
+.crear-ruta-page > .crear-ruta-sidebar {
+  flex: 0 0 260px;
+  background-color: var(--clr-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.crear-ruta-main {
+  flex: 1;
+  padding: var(--space-xl) var(--space-l);
+  animation: fadeIn 0.6s ease-out both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/*——————————————————*/
+/*  Form Container     */
+/*——————————————————*/
+
+.form-ruta {
+  background: var(--clr-surface);
+  padding: var(--space-l);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  animation: slideIn 0.5s ease-out both;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/*——————————————————*/
+/*  Inputs & Labels    */
+/*——————————————————*/
+
+.form-ruta label,
+.form-ruta .form-label {
+  display: block;
+  margin-bottom: var(--space-s);
+  font-weight: 500;
+}
+
+.form-ruta input,
+.form-ruta select,
+.form-ruta textarea {
+  width: 100%;
+  padding: var(--space-s) var(--space-m);
+  border: 1px solid var(--clr-border);
+  border-radius: 4px;
+  font-size: var(--fs-base);
+  transition: border-color 0.2s;
+}
+
+.form-ruta input:focus,
+.form-ruta select:focus,
+.form-ruta textarea:focus {
+  outline: none;
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px rgba(74,144,226,0.2);
+}
+
+/*——————————————————*/
+/*  Messages            */
+/*——————————————————*/
+
+.mensaje-exito {
+  background: var(--clr-success);
+  color: #fff;
+  padding: var(--space-s) var(--space-m);
+  margin-bottom: var(--space-m);
+  border-radius: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.error {
+  color: var(--clr-error);
+  font-size: var(--fs-sm);
+  margin-top: var(--space-s);
+}
+
+/*——————————————————*/
+/*  Input with Icon     */
+/*——————————————————*/
+
+.input-with-icon {
+  position: relative;
+  margin-bottom: var(--space-m);
+}
+
+.custom-input-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  border: 1px solid var(--clr-border);
+  padding: var(--space-s) var(--space-m);
+  border-radius: 4px;
+  background: #fafbfd;
+  transition: border-color 0.2s;
+}
+
+.custom-input-container:hover {
+  border-color: var(--clr-primary);
+}
+
+.selected-barrios-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  flex: 1;
+  min-height: 2.5rem;
+  align-items: center;
+}
+
+.placeholder-text {
+  color: var(--clr-border);
+  font-style: italic;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  color: var(--clr-secondary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.input-icon:hover {
+  transform: scale(1.1);
+}
+
+.custom-tooltip {
+  position: absolute;
+  top: -1.8rem;
+  right: var(--space-m);
+  background: var(--clr-primary);
+  color: #fff;
+  padding: var(--space-s) var(--space-m);
+  border-radius: 4px;
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/*——————————————————*/
+/*  Dropdown Options     */
+/*——————————————————*/
+
+.options-dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-s));
+  left: 0;
+  width: 100%;
+  max-height: 150px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: 4px;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  z-index: 10;
+  animation: slideDown 0.3s ease-out both;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.option-item {
+  padding: var(--space-s) var(--space-m);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  transition: background 0.2s;
+}
+
+.option-item:hover {
+  background: #f0f4ff;
+}
+
+.selected-option {
+  background: #e8f0fe;
+}
+
+.order-badge {
+  background: var(--clr-primary);
+  color: #fff;
+  font-size: var(--fs-sm);
+  border-radius: 50%;
+  width: 1.4rem;
+  height: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*——————————————————*/
+/*  Tags & Remover      */
+/*——————————————————*/
+
+.selected-barrio-tag {
+  background: #eef6fb;
+  color: var(--clr-text);
+  padding: 0 var(--space-s);
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-s);
+  font-size: var(--fs-sm);
+}
+
+.remove-barrio-btn {
+  background: transparent;
+  border: none;
+  color: var(--clr-error);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.remove-barrio-btn:hover {
+  color: darken(var(--clr-error), 10%);
+}
+
+/*——————————————————*/
+/*  Submit Button       */
+/*——————————————————*/
+
+.form-ruta .btn-primary,
+.form-ruta .btn {
+  background-color: var(--clr-primary) !important;
+  border-color: var(--clr-primary) !important;
+  color: #fff !important;
+  padding: var(--space-s) var(--space-l);
+  font-size: var(--fs-base);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.form-ruta .btn-primary:hover,
+.form-ruta .btn:hover {
+  background-color: #357ab8 !important;
+  border-color: #357ab8 !important;
+}

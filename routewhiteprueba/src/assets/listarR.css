@@ -1,0 +1,60 @@
+main {
+  padding: 100px 5%;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #FA812F;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.paraderos-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  font-size: 0.95rem;
+}
+
+.paraderos-table thead {
+  background-color: #FA812F;
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.88rem;
+}
+
+.paraderos-table th,
+.paraderos-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #ececec;
+}
+
+.paraderos-table tbody tr:nth-child(even) {
+  background-color: #fef9f5;
+}
+
+.paraderos-table tbody tr:hover {
+  background-color: #fff4eb;
+  transition: background 0.2s ease;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #FA812F;
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.2);
+  color: #f97f24;
+}

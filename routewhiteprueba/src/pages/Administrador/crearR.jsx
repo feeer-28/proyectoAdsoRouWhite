@@ -1,431 +1,354 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { FiPlus } from 'react-icons/fi';
-import '../../assets/crearR.css';
-import { CButton, CCol, CForm, CFormInput, CFormTextarea, CFormSelect } from '@coreui/react';
+// src/components/crearR.jsx
+
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { FiPlus } from 'react-icons/fi'
+import SidebarAdmin from './sidebarAdmin'
+import '../../assets/crearR.css'
+import {
+  CButton,
+  CCol,
+  CForm,
+  CFormInput,
+  CFormSelect,
+  CFormTextarea,
+} from '@coreui/react'
+
+// Sólo cambias tu frontend: apuntas a tu backend en el puerto 3000
+axios.defaults.baseURL = 'http://localhost:3000'
 
 const CrearRuta = () => {
-  const navigate = useNavigate();
-  const [formulario, setFormulario] = useState({
+  const navigate = useNavigate()
+
+  // datos que vienen del backend
+  const [empresas, setEmpresas]   = useState([])
+  const [paraderos, setParaderos] = useState([])
+
+  // estado del formulario
+  const [form, setForm] = useState({
     nombre: '',
     descripcion: '',
     hora_inicio: '',
     hora_fin: '',
     empresaId: '',
-    ida: '',
-    retorno: ''
-  });
-  const [errores, setErrores] = useState({
-    nombre: '',
-    descripcion: '',
-    hora_inicio: '',
-    hora_fin: '',
-    empresaId: '',
-    ida: '',
-    retorno: ''
-  });
-  const [mensajeExito, setMensajeExito] = useState('');
-  const [showIdaOptions, setShowIdaOptions] = useState(false);
-  const [showRetornoOptions, setShowRetornoOptions] = useState(false);
-  const [showIdaTooltip, setShowIdaTooltip] = useState(false);
-  const [showRetornoTooltip, setShowRetornoTooltip] = useState(false);
-  const [selectedIdaBarrios, setSelectedIdaBarrios] = useState([]);
-  const [selectedRetornoBarrios, setSelectedRetornoBarrios] = useState([]);
+  })
 
-  // Opciones predefinidas para los puntos
-  const opcionesPuntos = [
-    'Barrio Bolívar',
-    
-  ];
+  // lista de ids seleccionados
+  const [idaList, setIdaList]     = useState([])
+  const [retList, setRetList]     = useState([])
 
-  // Opciones de empresas (puedes cargar esto desde el backend)
-  const opcionesEmpresas = [
-    { id: 1, nombre: 'Empresa A' },
-    { id: 2, nombre: 'Empresa B' },
-    { id: 3, nombre: 'Empresa C' }
-  ];
+  // UI state
+  const [errors, setErrors]       = useState({})
+  const [msgOk, setMsgOk]         = useState('')
+  const [showIda, setShowIda]     = useState(false)
+  const [showRet, setShowRet]     = useState(false)
+  const [tipIda, setTipIda]       = useState(false)
+  const [tipRet, setTipRet]       = useState(false)
 
-  const validarCampo = (name, value) => {
-    let error = '';
-    if (name === 'nombre') {
-      if (!value.trim()) error = 'El nombre de la ruta es obligatorio.';
-      else if (value.length < 2 || value.length > 50) error = 'El nombre de la ruta debe tener entre 2 y 50 caracteres.';
+  // carga inicial de empresas y paraderos
+  useEffect(() => {
+    const token = localStorage.getItem('tokenAdmin')
+
+    axios
+      .get('/api/empresas/listar', { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => setEmpresas(Array.isArray(r.data) ? r.data : []))
+      .catch(() => setEmpresas([]))
+
+    axios
+      .get('/api/paraderos', { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => setParaderos(Array.isArray(r.data) ? r.data : []))
+      .catch(() => setParaderos([]))
+  }, [navigate])
+
+  const validate = (field, val) => {
+    switch (field) {
+      case 'nombre':
+        if (!val.trim())           return 'El nombre es obligatorio.'
+        if (val.trim().length < 3) return 'Mínimo 3 caracteres.'
+        return ''
+      case 'hora_inicio': if (!val) return 'Hora de inicio es obligatoria.'
+                          return ''
+      case 'hora_fin':    if (!val) return 'Hora de fin es obligatoria.'
+                          return ''
+      case 'empresaId':   if (!val) return 'Selecciona una empresa.'
+                          return ''
+      case 'ida':         if (idaList.length === 0) return 'Agrega puntos de ida.'
+                          return ''
+      case 'retorno':     if (retList.length === 0) return 'Agrega puntos de retorno.'
+                          return ''
+      default: return ''
     }
-    if (name === 'descripcion') {
-      if (!value.trim()) error = 'La descripción es obligatoria.';
-      else if (value.length < 10 || value.length > 500) error = 'La descripción debe tener entre 10 y 500 caracteres.';
+  }
+
+  const handleChange = e => {
+    const { name, value } = e.target
+    setForm(f => ({ ...f, [name]: value }))
+    setErrors(errs => ({ ...errs, [name]: validate(name, value) }))
+  }
+
+  const toggleDropdown = fld => {
+    if (fld === 'ida') {
+      setShowIda(v => !v); setShowRet(false)
+    } else {
+      setShowRet(v => !v); setShowIda(false)
     }
-    if (name === 'hora_inicio') {
-      if (!value.trim()) error = 'La hora de inicio es obligatoria.';
+  }
+
+  const addRemove = (id, fld) => {
+    if (fld === 'ida') {
+      setIdaList(prev =>
+        prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+      )
+    } else {
+      setRetList(prev =>
+        prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+      )
     }
-    if (name === 'hora_fin') {
-      if (!value.trim()) error = 'La hora de fin es obligatoria.';
+  }
+
+  const ordered = fld => {
+    const sel = fld === 'ida' ? idaList : retList
+    const rest = paraderos.map(p => p.id).filter(x => !sel.includes(x))
+    return [...sel, ...rest]
+  }
+
+  const renderTags = (arr, fld) =>
+    arr.map(id => {
+      const p = paraderos.find(x => x.id === id) || {}
+      return (
+        <span key={id} className="selected-barrio-tag">
+          {p.nombre}
+          <button
+            type="button"
+            className="remove-barrio-btn"
+            onClick={e => {
+              e.stopPropagation()
+              addRemove(id, fld)
+            }}
+          >
+            ×
+          </button>
+        </span>
+      )
+    })
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    setMsgOk('')
+
+    // validaciones
+    const errs = {
+      nombre: validate('nombre', form.nombre),
+      hora_inicio: validate('hora_inicio', form.hora_inicio),
+      hora_fin: validate('hora_fin', form.hora_fin),
+      empresaId: validate('empresaId', form.empresaId),
+      ida: validate('ida', idaList),
+      retorno: validate('retorno', retList),
     }
-    if (name === 'empresaId') {
-      if (!value) error = 'Debe seleccionar una empresa.';
-    }
-    if (name === 'ida') {
-      if (selectedIdaBarrios.length === 0) error = 'Debe seleccionar al menos un punto de ida.';
-    }
-    if (name === 'retorno') {
-      if (selectedRetornoBarrios.length === 0) error = 'Debe seleccionar al menos un punto de retorno.';
-    }
-    return error;
-  };
+    setErrors(errs)
+    if (Object.values(errs).some(x => x)) return
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormulario(prev => ({ ...prev, [name]: value }));
-    setErrores(prev => ({ ...prev, [name]: validarCampo(name, value) }));
-  };
-
-  const handleIconClick = (field) => {
-    if (field === 'ida') {
-      setShowIdaOptions(!showIdaOptions);
-      setShowRetornoOptions(false);
-    } else if (field === 'retorno') {
-      setShowRetornoOptions(!showRetornoOptions);
-      setShowIdaOptions(false);
-    }
-  };
-
-  const handleIconMouseEnter = (field) => {
-    if (field === 'ida') {
-      setShowIdaTooltip(true);
-    } else if (field === 'retorno') {
-      setShowRetornoTooltip(true);
-    }
-  };
-
-  const handleIconMouseLeave = (field) => {
-    if (field === 'ida') {
-      setShowIdaTooltip(false);
-    } else if (field === 'retorno') {
-      setShowRetornoTooltip(false);
-    }
-  };
-
-  const selectOption = (option, field) => {
-    if (field === 'ida') {
-      setSelectedIdaBarrios(prev => {
-        if (prev.includes(option)) {
-          return prev.filter(item => item !== option);
-        } else {
-          return [...prev, option];
-        }
-      });
-    } else if (field === 'retorno') {
-      setSelectedRetornoBarrios(prev => {
-        if (prev.includes(option)) {
-          return prev.filter(item => item !== option);
-        } else {
-          return [...prev, option];
-        }
-      });
-    }
-  };
-
-  const removeBarrio = (barrio, field) => {
-    if (field === 'ida') {
-      setSelectedIdaBarrios(prev => prev.filter(item => item !== barrio));
-    } else if (field === 'retorno') {
-      setSelectedRetornoBarrios(prev => prev.filter(item => item !== barrio));
-    }
-  };
-
-  const getOrderedOptions = (field) => {
-    const selectedBarrios = field === 'ida' ? selectedIdaBarrios : selectedRetornoBarrios;
-    const unselectedOptions = opcionesPuntos.filter(option => !selectedBarrios.includes(option));
-    return [...selectedBarrios, ...unselectedOptions];
-  };
-
-  const formatSelectedBarrios = (barrios) => {
-    return barrios.map((barrio, index) => (
-      <span key={index} className="selected-barrio-tag">
-        {barrio}
-        <button
-          type="button"
-          className="remove-barrio-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            removeBarrio(barrio, barrios === selectedIdaBarrios ? 'ida' : 'retorno');
-          }}
-        >
-          ×
-        </button>
-      </span>
-    ));
-  };
-
-  const cerrarSesion = () => {
-    localStorage.removeItem('tokenAdmin');
-    navigate('/login-administrador');
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMensajeExito('');
-
-    // Preparar datos para enviar
-    const datosEnviar = {
-      ...formulario,
-      ida: selectedIdaBarrios,
-      retorno: selectedRetornoBarrios
-    };
-
-    // Validar todos los campos antes de enviar
-    const nuevosErrores = {
-      nombre: validarCampo('nombre', formulario.nombre),
-      descripcion: validarCampo('descripcion', formulario.descripcion),
-      hora_inicio: validarCampo('hora_inicio', formulario.hora_inicio),
-      hora_fin: validarCampo('hora_fin', formulario.hora_fin),
-      empresaId: validarCampo('empresaId', formulario.empresaId),
-      ida: validarCampo('ida', formulario.ida),
-      retorno: validarCampo('retorno', formulario.retorno)
-    };
-    setErrores(nuevosErrores);
-
-    const hayErrores = Object.values(nuevosErrores).some(msg => msg);
-    if (hayErrores) return;
-
+    // envío
     try {
-      const token = localStorage.getItem('tokenAdmin');
-      const res = await axios.post(
-        'http://localhost:3000/api/rutas/crear',
-        datosEnviar,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setMensajeExito(res.data.mensaje);
-      setFormulario({
+      const token = localStorage.getItem('tokenAdmin')
+      const payload = {
+        ...form,
+        ida: idaList,
+        retorno: retList,
+      }
+      const res = await axios.post('/api/rutas/crear', payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      setMsgOk(res.data.mensaje || 'Ruta creada.')
+      // reset
+      setForm({
         nombre: '',
         descripcion: '',
         hora_inicio: '',
         hora_fin: '',
         empresaId: '',
-        ida: '',
-        retorno: ''
-      });
-      setSelectedIdaBarrios([]);
-      setSelectedRetornoBarrios([]);
-      setErrores({
-        nombre: '',
-        descripcion: '',
-        hora_inicio: '',
-        hora_fin: '',
-        empresaId: '',
-        ida: '',
-        retorno: ''
-      });
-      navigate('/administrador/listarR');
+      })
+      setIdaList([])
+      setRetList([])
+      setErrors({})
+      setTimeout(() => navigate('/administrador/listarR'), 800)
     } catch (err) {
-      const mensaje = err.response?.data?.mensaje || 'Error al crear ruta.';
-      alert(mensaje);
+      const msgs = err.response?.data?.errores || [err.message]
+      alert(msgs.join('\n'))
     }
-  };
+  }
 
   return (
     <div className="crear-ruta-page">
-      <header>
-        <div className="logo">RouWhite</div>
-        <nav>
-          <ul>
-            <li><a href="/administrador/dashboarAdmin">Inicio</a></li>
-            <li><a href="#">Listado Rutas</a></li>
-            <li><a href="#" onClick={() => navigate('/crear-ruta')}>Crear Ruta</a></li>
-            <li><a href="/administrador/listarParaderos">Listado Paraderos</a></li>
-            <li><a href="/administrador/crearParadero" onClick={() => navigate('/crear-paradero')}>Crear Paraderos</a></li>
-            <li><a href="#">Perfil</a></li>
-          </ul>
-        </nav>
-        <button className="login-btn" onClick={cerrarSesion}>Cerrar sesión</button>
-      </header>
-
+      <SidebarAdmin />
       <main className="crear-ruta-main">
         <h2>Crear Ruta</h2>
-
-        {mensajeExito && <p className="mensaje-exito">{mensajeExito}</p>}
-
+        {msgOk && <p className="mensaje-exito">{msgOk}</p>}
         <CForm onSubmit={handleSubmit} className="row g-3 form-ruta">
+
+          {/* Nombre */}
           <CCol md={6}>
             <CFormInput
-              type="text"
               name="nombre"
               label="Nombre de la Ruta"
-              placeholder="Ej: 1TP, Ruta Norte, etc."
-              value={formulario.nombre}
+              placeholder="Ej: Ruta Centro"
+              value={form.nombre}
               onChange={handleChange}
-              required
-              feedbackInvalid={errores.nombre}
-              invalid={!!errores.nombre}
+              invalid={!!errors.nombre}
+              feedbackInvalid={errors.nombre}
             />
-            {errores.nombre && <p className="error">{errores.nombre}</p>}
           </CCol>
 
+          {/* Empresa */}
           <CCol md={6}>
             <CFormSelect
               name="empresaId"
               label="Empresa"
-              value={formulario.empresaId}
+              value={form.empresaId}
               onChange={handleChange}
-              required
-              feedbackInvalid={errores.empresaId}
-              invalid={!!errores.empresaId}
+              invalid={!!errors.empresaId}
+              feedbackInvalid={errors.empresaId}
             >
-              <option value="">Seleccione una empresa</option>
-              {opcionesEmpresas.map(empresa => (
-                <option key={empresa.id} value={empresa.id}>
-                  {empresa.nombre}
+              <option value="">Selecciona empresa</option>
+              {empresas.map(e => (
+                <option key={e.id} value={e.id}>
+                  {e.nombre}
                 </option>
               ))}
             </CFormSelect>
-            {errores.empresaId && <p className="error">{errores.empresaId}</p>}
           </CCol>
 
+          {/* Horas */}
           <CCol md={6}>
             <CFormInput
               type="time"
               name="hora_inicio"
               label="Hora de Inicio"
-              value={formulario.hora_inicio}
+              value={form.hora_inicio}
               onChange={handleChange}
-              required
-              feedbackInvalid={errores.hora_inicio}
-              invalid={!!errores.hora_inicio}
+              invalid={!!errors.hora_inicio}
+              feedbackInvalid={errors.hora_inicio}
             />
-            {errores.hora_inicio && <p className="error">{errores.hora_inicio}</p>}
           </CCol>
-
           <CCol md={6}>
             <CFormInput
               type="time"
               name="hora_fin"
               label="Hora de Fin"
-              value={formulario.hora_fin}
+              value={form.hora_fin}
               onChange={handleChange}
-              required
-              feedbackInvalid={errores.hora_fin}
-              invalid={!!errores.hora_fin}
+              invalid={!!errors.hora_fin}
+              feedbackInvalid={errors.hora_fin}
             />
-            {errores.hora_fin && <p className="error">{errores.hora_fin}</p>}
           </CCol>
 
+          {/* Puntos de Ida */}
           <CCol xs={12}>
             <div className="input-with-icon">
               <div className="custom-input-container">
                 <div className="selected-barrios-display">
-                  {selectedIdaBarrios.length > 0 ? (
-                    formatSelectedBarrios(selectedIdaBarrios)
-                  ) : (
-                    <span className="placeholder-text">Puntos de ida de la ruta</span>
-                  )}
+                  {idaList.length
+                    ? renderTags(idaList, 'ida')
+                    : <span className="placeholder-text">Selecciona puntos de ida</span>}
                 </div>
                 <div className="icon-container">
                   <FiPlus
-                    className="input-icon clickable-icon left-icon"
-                    onClick={() => handleIconClick('ida')}
-                    onMouseEnter={() => handleIconMouseEnter('ida')}
-                    onMouseLeave={() => handleIconMouseLeave('ida')}
+                    className="input-icon clickable-icon"
+                    onClick={() => toggleDropdown('ida')}
+                    onMouseEnter={() => setTipIda(true)}
+                    onMouseLeave={() => setTipIda(false)}
                   />
-                  {showIdaTooltip && (
-                    <div className="custom-tooltip">
-                      Agregar Puntos
-                    </div>
-                  )}
+                  {tipIda && <div className="custom-tooltip">Agregar puntos de ida</div>}
                 </div>
               </div>
               <label className="form-label">Puntos de Ida</label>
-              {showIdaOptions && (
+              {showIda && (
                 <div className="options-dropdown">
-                  {getOrderedOptions('ida').map((opcion, index) => {
-                    const isSelected = selectedIdaBarrios.includes(opcion);
+                  {ordered('ida').map(id => {
+                    const p = paraderos.find(x => x.id === id) || {}
+                    const sel = idaList.includes(id)
                     return (
                       <div
-                        key={index}
-                        className={`option-item ${isSelected ? 'selected-option' : ''}`}
-                        onClick={() => selectOption(opcion, 'ida')}
+                        key={id}
+                        className={`option-item ${sel ? 'selected-option' : ''}`}
+                        onClick={() => addRemove(id, 'ida')}
                       >
-                        {isSelected && <span className="order-badge">{selectedIdaBarrios.indexOf(opcion) + 1}</span>}
-                        {opcion}
+                        {sel && <span className="order-badge">{idaList.indexOf(id) + 1}</span>}
+                        {p.nombre}
                       </div>
-                    );
+                    )
                   })}
                 </div>
               )}
+              {errors.ida && <p className="error">{errors.ida}</p>}
             </div>
-            {errores.ida && <p className="error">{errores.ida}</p>}
           </CCol>
 
+          {/* Puntos de Retorno */}
           <CCol xs={12}>
             <div className="input-with-icon">
               <div className="custom-input-container">
                 <div className="selected-barrios-display">
-                  {selectedRetornoBarrios.length > 0 ? (
-                    formatSelectedBarrios(selectedRetornoBarrios)
-                  ) : (
-                    <span className="placeholder-text">Puntos de retorno de la ruta</span>
-                  )}
+                  {retList.length
+                    ? renderTags(retList, 'retorno')
+                    : <span className="placeholder-text">Selecciona puntos de retorno</span>}
                 </div>
                 <div className="icon-container">
                   <FiPlus
-                    className="input-icon clickable-icon left-icon"
-                    onClick={() => handleIconClick('retorno')}
-                    onMouseEnter={() => handleIconMouseEnter('retorno')}
-                    onMouseLeave={() => handleIconMouseLeave('retorno')}
+                    className="input-icon clickable-icon"
+                    onClick={() => toggleDropdown('retorno')}
+                    onMouseEnter={() => setTipRet(true)}
+                    onMouseLeave={() => setTipRet(false)}
                   />
-                  {showRetornoTooltip && (
-                    <div className="custom-tooltip">
-                      Agregar Puntos
-                    </div>
-                  )}
+                  {tipRet && <div className="custom-tooltip">Agregar puntos de retorno</div>}
                 </div>
               </div>
               <label className="form-label">Puntos de Retorno</label>
-              {showRetornoOptions && (
+              {showRet && (
                 <div className="options-dropdown">
-                  {getOrderedOptions('retorno').map((opcion, index) => {
-                    const isSelected = selectedRetornoBarrios.includes(opcion);
+                  {ordered('retorno').map(id => {
+                    const p = paraderos.find(x => x.id === id) || {}
+                    const sel = retList.includes(id)
                     return (
                       <div
-                        key={index}
-                        className={`option-item ${isSelected ? 'selected-option' : ''}`}
-                        onClick={() => selectOption(opcion, 'retorno')}
+                        key={id}
+                        className={`option-item ${sel ? 'selected-option' : ''}`}
+                        onClick={() => addRemove(id, 'retorno')}
                       >
-                        {isSelected && <span className="order-badge">{selectedRetornoBarrios.indexOf(opcion) + 1}</span>}
-                        {opcion}
+                        {sel && <span className="order-badge">{retList.indexOf(id) + 1}</span>}
+                        {p.nombre}
                       </div>
-                    );
+                    )
                   })}
                 </div>
               )}
+              {errors.retorno && <p className="error">{errors.retorno}</p>}
             </div>
-            {errores.retorno && <p className="error">{errores.retorno}</p>}
           </CCol>
 
+          {/* Descripción */}
           <CCol xs={12}>
             <CFormTextarea
               name="descripcion"
-              label="Descripción de la Ruta"
-              placeholder="Descripción detallada de la ruta"
-              value={formulario.descripcion}
-              onChange={handleChange}
-              required
-              feedbackInvalid={errores.descripcion}
-              invalid={!!errores.descripcion}
+              label="Descripción"
+              placeholder="Detalles de la ruta…"
               rows={4}
+              value={form.descripcion}
+              onChange={handleChange}
+              invalid={!!errors.descripcion}
+              feedbackInvalid={errors.descripcion}
             />
-            {errores.descripcion && <p className="error">{errores.descripcion}</p>}
           </CCol>
 
+          {/* Botón Crear */}
           <CCol xs={12}>
-            <CButton color="primary" type="submit">
-              Crear Ruta
-            </CButton>
+            <CButton color="primary" type="submit">Crear Ruta</CButton>
           </CCol>
         </CForm>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default CrearRuta;
+export default CrearRuta
