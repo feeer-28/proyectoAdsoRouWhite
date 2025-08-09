@@ -182,7 +182,6 @@ exports.actualizarRuta = async (rutaId, datos) => {
     errores.push('El nombre debe tener al menos 3 caracteres.');
   }
 
-  // Validar duplicado
   const existe = await Ruta.findOne({
     where: {
       nombre: datos.nombre,
@@ -200,17 +199,59 @@ exports.actualizarRuta = async (rutaId, datos) => {
     throw error;
   }
 
-  // Actualizar la ruta
+  // 1. Actualizar datos básicos
   ruta.nombre = datos.nombre.trim();
   ruta.descripcion = datos.descripcion || '';
   ruta.hora_inicio = datos.hora_inicio;
   ruta.hora_fin = datos.hora_fin;
   ruta.empresaId = datos.empresaId;
-
   await ruta.save();
 
-  return ruta;
+  // 2. Eliminar relaciones anteriores
+  await ParaderosRutas.destroy({ where: { rutaId } });
+
+  // 3. Insertar nuevas relaciones de ida
+  for (let i = 0; i < (datos.ida || []).length; i++) {
+    await ParaderosRutas.create({
+      rutaId,
+      paraderoId: datos.ida[i],
+      tipo: 'ida',
+      orden: i + 1
+    });
+  }
+
+  // 4. Insertar nuevas relaciones de retorno
+  for (let i = 0; i < (datos.retorno || []).length; i++) {
+    await ParaderosRutas.create({
+      rutaId,
+      paraderoId: datos.retorno[i],
+      tipo: 'retorno',
+      orden: i + 1
+    });
+  }
+
+  // 5. Retornar ruta con paraderos actualizados
+  const rutaActualizada = await Ruta.findByPk(rutaId, {
+    include: [
+      {
+        model: Empresa,
+        as: 'empresa',
+        attributes: ['id', 'nombre']
+      },
+      {
+        model: Paradero,
+        as: 'paraderos',
+        attributes: ['id', 'nombre', 'direccion', 'latitud', 'longitud'],
+        through: {
+          attributes: ['tipo', 'orden']
+        }
+      }
+    ]
+  });
+
+  return rutaActualizada;
 };
+
 exports.eliminarRuta = async (rutaId) => {
   const ruta = await Ruta.findByPk(rutaId);
   if (!ruta) {

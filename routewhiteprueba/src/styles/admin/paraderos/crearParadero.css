@@ -65,9 +65,13 @@ nav ul li a:hover {
 /* Espaciado para que no quede debajo del header */
 .crear-paradero-main {
   padding-top: 100px;
-  padding-left: 5%;
-  padding-right: 5%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
 }
+
+
 
 /* Formulario */
 .form-paradero {

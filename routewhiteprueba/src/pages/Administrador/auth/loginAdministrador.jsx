@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import '../../assets/login.css';
+import '../../../styles/admin/auth/login.css';
 import { GoogleLogin } from '@react-oauth/google';
 
 const LoginAdministrador = () => {
@@ -18,12 +18,11 @@ const LoginAdministrador = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // 👇 Esta es la corrección en handleSubmit
-        const res = await fetch('http://localhost:3000/api/login/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(datos)
-        });
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
 
       const data = await res.json();
       if (data.token) {
@@ -89,7 +88,7 @@ const LoginAdministrador = () => {
             <GoogleLogin
               onSuccess={async (credentialResponse) => {
                 try {
-                  const res = await fetch('http://localhost:3000/api/administradores/login-google', {
+                  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/administradores/login-google`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ token: credentialResponse.credential }),

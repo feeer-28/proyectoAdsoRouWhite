@@ -9,3 +9,4 @@ router.put('/:id', rutasController.actualizarRuta);
 router.delete('/:id', rutasController.eliminarRuta);
 
 module.exports = router;
+
