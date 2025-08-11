@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../assets/registro.css';
+import "../../../styles/admin/auth/registro.css";
+
+
 
 const Registro = () => {
   const navigate = useNavigate();
