@@ -1,12 +1,16 @@
+// src/layouts/DashboardLayout.jsx
 import React from "react";
 import { Outlet } from "react-router-dom";
-import SidebarAdmin from "../pages/Administrador/sidebar/sidebarAdmin";
-import "../styles/admin/sidebar/sidebarAdminX.css";
 
+import SidebarAdmin from "../pages/Administrador/sidebar/sidebarAdmin";
+
+// Ajusta este import EXACTO a la ubicación real
+import "../styles/admin/dashboard/dashboardAdmin.css";
+import "../styles/admin/sidebar/sidebarAdminX.css";
 
 export default function DashboardLayout() {
   return (
-    <div className="layout-with-fixed-sidebar">
+    <div className="with-sidebar">
       <SidebarAdmin />
       <main className="dashboard-main">
         <Outlet />

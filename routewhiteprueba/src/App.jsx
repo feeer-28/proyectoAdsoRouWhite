@@ -1,38 +1,70 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { GoogleOAuthProvider } from '@react-oauth/google';
+// src/App.jsx
 
-import Inicio from "./pages/user/inicio";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+import Inicio from "./pages/user/inicio.jsx";
 
 // Layout del administrador
-import DashboardLayout from "./layouts/DashboardLayout";
+import DashboardLayout from "./layouts/DashboardLayout.jsx";
 
-// Páginas del administrador
-import RegistroAdministrador from "./pages/Administrador/auth/registroAdministrador";
-import LoginAdministrador from "./pages/Administrador/auth/loginAdministrador";
-import DashboarAdmin from "./pages/Administrador/dashboard/dashboarAdmin";
-import CrearParadero from "./pages/Administrador/paraderos/crearParadero";
-import ListarParaderos from "./pages/Administrador/paraderos/listarParaderos";
+// Auth administrador
+import RegistroAdministrador from "./pages/Administrador/auth/registroAdministrador.jsx";
+import LoginAdministrador    from "./pages/Administrador/auth/loginAdministrador.jsx";
 
-// ⚠️ No incluyo ListarRutas porque ese archivo NO EXISTE en tu estructura actual
+// Dashboard & paraderos
+import DashboarAdmin   from "./pages/Administrador/dashboard/dashboarAdmin.jsx";
+import CrearParadero   from "./pages/Administrador/paraderos/crearParadero.jsx";
+import ListarParaderos from "./pages/Administrador/paraderos/listarParaderos.jsx";
+
+// Rutas
+import CrearR  from "./pages/Administrador/rutas/crearR.jsx";
+import ListarR from "./pages/Administrador/rutas/listarR.jsx";
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId="757412276663-eibo0h04o1dcjh21n0eedqfo210f0vt3.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="TU_CLIENT_ID_AQUÍ">
       <BrowserRouter>
         <Routes>
-          {/* 🧭 Ruta pública */}
+
+          {/* Public */}
           <Route path="/" element={<Inicio />} />
 
-          {/* 🔐 Rutas del administrador */}
-          <Route path="/registro-administrador" element={<RegistroAdministrador rol="admin" />} />
-          <Route path="/login-administrador" element={<LoginAdministrador />} />
+          {/* Registro y Login Admin */}
+          <Route
+            path="/registro-administrador"
+            element={<RegistroAdministrador rol="admin" />}
+          />
+          <Route
+            path="/login-administrador"
+            element={<LoginAdministrador />}
+          />
 
-          {/* 🧱 Rutas protegidas con layout */}
-          <Route element={<DashboardLayout />}>
-            <Route path="/admin/dashboard" element={<DashboarAdmin />} />
-            <Route path="/administrador/crearParadero" element={<CrearParadero />} />
-            <Route path="/administrador/listarParaderos" element={<ListarParaderos />} />
+          {/* Área protegida Admin - ruta original */}
+          <Route path="/administrador" element={<DashboardLayout />}>
+            <Route index element={<DashboarAdmin />} />
+            <Route path="dashboard" element={<DashboarAdmin />} />
+            <Route path="crearParadero"   element={<CrearParadero />} />
+            <Route path="listarParaderos" element={<ListarParaderos />} />
+            <Route path="rutas/crear"  element={<CrearR />} />
+            <Route path="rutas/listar" element={<ListarR />} />
+            <Route path="crearR"  element={<CrearR />} />
+            <Route path="listarR" element={<ListarR />} />
           </Route>
+
+          {/* Área protegida Admin - alias /admin */}
+          <Route path="/admin" element={<DashboardLayout />}>
+            <Route index element={<DashboarAdmin />} />
+            <Route path="dashboard" element={<DashboarAdmin />} />
+            <Route path="crearParadero"   element={<CrearParadero />} />
+            <Route path="listarParaderos" element={<ListarParaderos />} />
+            <Route path="rutas/crear"  element={<CrearR />} />
+            <Route path="rutas/listar" element={<ListarR />} />
+            <Route path="crearR"  element={<CrearR />} />
+            <Route path="listarR" element={<ListarR />} />
+          </Route>
+
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>
