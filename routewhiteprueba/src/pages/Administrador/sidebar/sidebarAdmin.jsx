@@ -21,7 +21,7 @@ export default function SidebarAdmin() {
       <nav>
         <ul>
           <li>
-            <button onClick={() => navigate("/admin/dashboard")}>
+            <button onClick={() => navigate("/administrador/dashboard")}>
               <span className="icon"><i className="fa-solid fa-house"></i></span>
               <span>Dashboard</span>
             </button>

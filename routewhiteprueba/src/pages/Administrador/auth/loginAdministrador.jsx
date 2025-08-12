@@ -27,7 +27,7 @@ const LoginAdministrador = () => {
       const data = await res.json();
       if (data.token) {
         localStorage.setItem('tokenAdmin', data.token);
-        navigate('/admin/dashboard');
+        navigate('/administrador/dashboard'); // ✅ Ruta corregida
       } else {
         setMensaje(data.msg || 'Credenciales incorrectas');
         setMostrarModal(true);
@@ -96,7 +96,7 @@ const LoginAdministrador = () => {
                   const data = await res.json();
                   if (data.token) {
                     localStorage.setItem('tokenAdmin', data.token);
-                    navigate('/admin/dashboard');
+                    navigate('/administrador/dashboard'); // ✅ Ruta corregida
                   } else {
                     setMensaje(data.msg || 'Error al iniciar sesión con Google');
                     setMostrarModal(true);
