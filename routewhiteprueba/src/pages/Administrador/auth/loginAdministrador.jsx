@@ -39,7 +39,7 @@ const LoginAdministrador = () => {
   };
 
   return (
-    <div className="login-wrapper">
+    <div className="login-wrapper no-admin">
       <div className="container">
         <div className="right-panel">
           <h2>Login Administrador</h2>

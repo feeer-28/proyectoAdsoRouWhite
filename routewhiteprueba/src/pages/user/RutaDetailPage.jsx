@@ -1,8 +1,8 @@
-import { Header } from "./components/header";
-
-import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
-import { Button } from "./components/ui/button";
-import { Bus, Clock, MapPin } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Header } from "@userComponents/header.jsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@userComponents/ui/card.jsx";
+import { Button } from "@userComponents/ui/button.jsx";
+import { Bus, Clock, MapPin, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const routesData = {
@@ -58,6 +58,11 @@ const routesData = {
 
 export default function RutaDetailPage({ params }) {
   const route = routesData[params.slug];
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+      setCurrentYear(new Date().getFullYear());
+  }, []);
 
   if (!route) {
     return (
@@ -81,16 +86,23 @@ export default function RutaDetailPage({ params }) {
       <Header />
       <main className="flex-1 py-12 md:py-16 lg:py-20">
         <div className="container px-4 md:px-6">
+          <div className="mb-8">
+            <Button asChild variant="outline">
+              <Link to="/rutas">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Volver a todas las rutas
+              </Link>
+            </Button>
+          </div>
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             
-            <div className="flex items-center justify-center bg-muted rounded-lg shadow-lg">
-                 <div 
-                    className="w-full h-[400px] md:h-full bg-slate-200 flex items-center justify-center text-slate-500 rounded-lg"
-                    aria-label="Espacio reservado para el mapa de la ruta"
+            <div className="flex items-center justify-center bg-muted rounded-lg shadow-lg relative aspect-video">
+                 <img
+                    src="https://placehold.co/600x400.png"
+                    alt="Mapa de la ruta"
                     data-ai-hint="map placeholder"
-                >
-                    <p className="text-xl font-medium">Aquí va el mapa de la ruta</p>
-                </div>
+                    className="object-cover rounded-lg w-full h-full"
+                  />
             </div>
             
             <div className="flex flex-col justify-center space-y-6">
@@ -138,7 +150,7 @@ export default function RutaDetailPage({ params }) {
         <div className="container mx-auto py-8 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
                 <Bus className="h-5 w-5 text-primary" />
-                <p>&copy; {new Date().getFullYear()} RouWhite.</p>
+                <p>&copy; {currentYear} PayánTransit.</p>
             </div>
             <nav className="flex gap-4 sm:gap-6 mt-4 md:mt-0">
                 <Link to="/nosotros" className="hover:text-foreground">Nosotros</Link>

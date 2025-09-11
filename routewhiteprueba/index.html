@@ -1,19 +1,53 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-
-    <!-- ✅ Íconos Font Awesome desde kit (más seguro) -->
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
     />
+
+    <title>ROUWHITE – Inicio</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/vite.svg"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=PT+Sans&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#29ABE2',
+              background: '#F9FAFB',
+              'muted-foreground': '#6B7280',
+              card: '#FFFFFF'
+            },
+            fontFamily: {
+              sans: ['Poppins', 'PT Sans', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
   </head>
-  <body>
+
+  <body class="bg-background font-sans overflow-x-hidden">
+    <!-- Aquí React montará tu aplicación -->
     <div id="root"></div>
+
+    <!-- Entrada al bundle de la app -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ✅ Variables HSL para uso modular, no para herencia global */
+    --background: 190 88% 95%; /* #E0F7FA */
+    --foreground: 24 96% 10%;
+    --card: 190 88% 95%;
+    --card-foreground: 24 96% 10%;
+    --popover: 190 88% 95%;
+    --popover-foreground: 24 96% 10%;
+    --primary: 196 79% 52%; /* #29ABE2 */
+    --primary-foreground: 24 96% 10%;
+    --secondary: 190 88% 90%;
+    --secondary-foreground: 24 96% 10%;
+    --muted: 190 88% 90%;
+    --muted-foreground: 24 96% 30%;
+    --accent: 88 52% 57%; /* #8BC34A */
+    --accent-foreground: 24 96% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 196 79% 85%;
+    --input: 196 79% 85%;
+    --ring: 196 79% 52%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 200 50% 10%;
+    --foreground: 190 88% 95%;
+    --card: 200 50% 10%;
+    --card-foreground: 190 88% 95%;
+    --popover: 200 50% 10%;
+    --popover-foreground: 190 88% 95%;
+    --primary: 196 79% 52%;
+    --primary-foreground: 24 96% 10%;
+    --secondary: 200 50% 20%;
+    --secondary-foreground: 190 88% 95%;
+    --muted: 200 50% 20%;
+    --muted-foreground: 190 88% 80%;
+    --accent: 88 52% 57%;
+    --accent-foreground: 24 96% 10%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 200 50% 20%;
+    --input: 200 50% 20%;
+    --ring: 196 79% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: transparent; /* ✅ Fondo neutral, sin herencia */
+    @apply text-foreground;
+    font-family: 'PT Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-headline {
+    font-family: 'Poppins', sans-serif;
+  }
+}

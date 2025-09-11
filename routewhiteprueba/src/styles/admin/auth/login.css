@@ -347,3 +347,6 @@ html {
   color: #FA812F;
 }
 
+.no-admin::before {
+  content: none !important;
+}

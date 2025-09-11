@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Bus } from 'lucide-react';
-import { cn } from "../lib/utils";
+import { cn } from "../lib/utils.js";
+
+
 
 export function Logo({ className }) {
   return (
@@ -13,7 +15,7 @@ export function Logo({ className }) {
     >
       <Bus className="h-7 w-7 text-primary" />
       <span className="text-2xl font-bold font-headline">
-        Rou<span className="text-primary">White</span>
+        ROU<span className="text-primary">WHITHE</span>
       </span>
     </Link>
   );

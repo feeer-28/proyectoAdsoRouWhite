@@ -10,46 +10,76 @@ const Login = () => {
   const [mensaje, setMensaje] = useState('');
   const [mostrarModal, setMostrarModal] = useState(false);
 
+  // 🔧 Manejo de campos
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDatos(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  // 🔐 Login clásico
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch('http://localhost:3000/api/usuarios/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(datos)
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.token) {
-          alert('Login exitoso');
-          localStorage.setItem('token', data.token);
-          navigate('/dashboard');
-        } else {
-          setMensaje(data.msg || 'Credenciales incorrectas');
-          setMostrarModal(true);
-        }
-      })
-      .catch(() => {
-        setMensaje('Error al conectar con el servidor');
-        setMostrarModal(true);
+    try {
+      const res = await fetch('http://localhost:3000/api/usuarios/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
       });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        navigate('/dashboard');
+      } else {
+        setMensaje(data.msg || 'Credenciales incorrectas');
+        setMostrarModal(true);
+      }
+    } catch (err) {
+      console.error('Error en login clásico:', err);
+      setMensaje('Error al conectar con el servidor');
+      setMostrarModal(true);
+    }
+  };
+
+  // 🔐 Login con Google
+  const handleGoogleLogin = async (credentialResponse) => {
+    const tokenGoogle = credentialResponse.credential;
+    console.log('🔐 Token generado por Google:', tokenGoogle); // Copiar para Postman
+
+    try {
+      const res = await fetch('http://localhost:3000/api/login/login-google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: tokenGoogle })
+      });
+
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        navigate('/dashboard');
+      } else {
+        setMensaje(data.msg || 'Error al iniciar sesión con Google');
+        setMostrarModal(true);
+      }
+    } catch (err) {
+      console.error('Error en login con Google:', err);
+      setMensaje('Error al conectar con el servidor (Google)');
+      setMostrarModal(true);
+    }
   };
 
   return (
     <div className="login-wrapper">
       <div className="container">
+        {/* Panel izquierdo */}
         <div className="left-panel">
           <h1>Bienvenidos a RouWhite</h1>
           <p>Accede con tu cuenta para gestionar tus rutas y más.</p>
           <div className="button-container">
-            <Link to="/registro" className="small-button">Register</Link>
+            <Link to="/Registro" className="small-button">Registrarse</Link>
           </div>
         </div>
 
+        {/* Panel derecho */}
         <div className="right-panel">
           <h2>USER LOGIN</h2>
 
@@ -93,28 +123,10 @@ const Login = () => {
             <button type="submit">LOGIN</button>
           </form>
 
+          {/* Botón de Google */}
           <div style={{ marginTop: '20px' }}>
             <GoogleLogin
-              onSuccess={async (credentialResponse) => {
-                try {
-                  const res = await fetch('http://localhost:3000/api/usuarios/login-google', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ token: credentialResponse.credential })
-                  });
-                  const data = await res.json();
-                  if (data.token) {
-                    localStorage.setItem('token', data.token);
-                    navigate('/dashboard');
-                  } else {
-                    setMensaje(data.msg || 'Error al iniciar sesión con Google');
-                    setMostrarModal(true);
-                  }
-                } catch {
-                  setMensaje('Error al conectar con el servidor (Google)');
-                  setMostrarModal(true);
-                }
-              }}
+              onSuccess={handleGoogleLogin}
               onError={() => {
                 setMensaje('Error al iniciar sesión con Google');
                 setMostrarModal(true);
@@ -124,6 +136,7 @@ const Login = () => {
         </div>
       </div>
 
+      {/* Modal de error */}
       {mostrarModal && (
         <div className="modal-error">
           <div className="modal-contenido">
