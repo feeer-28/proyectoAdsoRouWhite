@@ -1,0 +1,63 @@
+/* Ocupa toda la pantalla */
+body, html {
+  height: 100%;
+  margin: 100;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+} 
+
+/* Contenedor general con la imagen de fondo */
+.page-container {
+  display: flex;
+      /* centra vertical */
+  height: 200vh;             /* ocupa toda la pantalla */
+  background: url("tu-imagen.jpg") no-repeat center center/cover;
+}
+
+/* Caja del formulario */
+.crear-usuario-container {
+  background: rgba(255, 255, 255, 0.95); /* fondo blanco con un poco de transparencia */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+  margin: auto; /* centra horizontal y vertical */
+  margin-left: 400px;
+  width: 400px;   /* aquí controlas qué tan ancho lo quieres */
+  max-width: 95%; /* para que no se desborde en pantallas pequeñas */ 
+  text-align: center;
+}
+
+/* Título */
+.crear-usuario-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Inputs */
+.crear-usuario-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* Botón */
+.crear-usuario-container button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(to right, #f9a825, #ff6f00);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.crear-usuario-container button:hover {
+  background: linear-gradient(to right, #ff6f00, #f9a825);
+}

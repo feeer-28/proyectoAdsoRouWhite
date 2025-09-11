@@ -1,0 +1,312 @@
+/* --------------------------------------------
+   CONTENEDOR PRINCIPAL Y TÍTULO
+--------------------------------------------- */
+main {
+  padding: 40px 3%;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #FA812F;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --------------------------------------------
+   ENVOLTORIO DE LA TABLA
+--------------------------------------------- */
+.centered-table-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+/* --------------------------------------------
+   ESTILOS DE LA TABLA
+--------------------------------------------- */
+.paraderos-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+.paraderos-table thead {
+  background-color: #FA812F;
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.paraderos-table th,
+.paraderos-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  line-height: 1.4;
+  word-break: break-word;
+  vertical-align: middle;
+}
+
+.paraderos-table th:first-child,
+.paraderos-table td:first-child {
+  width: 60px;
+}
+
+.paraderos-table tbody tr:nth-child(even) {
+  background-color: #fdf7f2;
+}
+
+.paraderos-table tbody tr:hover {
+  background-color: #fff1e6;
+  transition: background 0.2s ease;
+}
+
+/* --------------------------------------------
+   BOTONES DE ÍCONO
+--------------------------------------------- */
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d75a12;
+  font-size: 1rem;
+  margin-right: 0.4rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.15);
+  color: #f97316;
+}
+
+/* --------------------------------------------
+   MODAL OVERLAY (ACTUALIZAR RUTA)
+--------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+/* --------------------------------------------
+   FORMULARIO DE EDICIÓN DE RUTA
+--------------------------------------------- */
+.editarR-form {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 500px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1001;
+}
+
+.editarR-form h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  text-align: center;
+  color: #FA812F;
+}
+
+.editarR-form label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+/* --------------------------------------------
+   INPUTS Y SELECTS DEL MODAL
+--------------------------------------------- */
+.editarR-form input,
+.editarR-form select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  margin-bottom: 0.5rem;
+  background-color: #fff !important;
+  color: #333 !important;
+  appearance: none;
+  position: relative;
+  z-index: 1002;
+}
+
+.editarR-form input[type="time"] {
+  padding-left: 0.5rem;
+}
+
+/* Forcing options background and color */
+.editarR-form select option {
+  background-color: #fff;
+  color: #333;
+}
+
+/* --------------------------------------------
+   SELECTOR DE PARADEROS (IDA Y RETORNO)
+--------------------------------------------- */
+.selector-paradero {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  position: relative;
+  overflow: visible !important;
+  margin-bottom: 1rem;
+}
+
+.selector-paradero select,
+.selector-paradero input {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #fff !important;
+  color: #333 !important;
+  appearance: none;
+  z-index: 1002;
+}
+
+.selector-paradero::after {
+  content: "▼";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+  z-index: 1003;
+}
+
+.selector-paradero button {
+  background: #FA812F;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  z-index: 1002;
+}
+
+/* --------------------------------------------
+   LISTA DE PARADEROS SELECCIONADOS
+--------------------------------------------- */
+.lista-paraderos {
+  list-style: none;
+  margin: 0.75rem 0 1.5rem;
+  padding: 0.5rem;
+  width: 100% !important;
+  min-height: 150px;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff !important;
+  color: #333 !important;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1002;
+}
+
+.lista-paraderos li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+  background: #fafafa;
+}
+
+.lista-paraderos li:last-child {
+  border-bottom: none;
+}
+
+.paradero-remove {
+  cursor: pointer;
+  color: #d00;
+  margin-left: 0.5rem;
+  font-weight: bold;
+  z-index: 1003;
+}
+
+/* --------------------------------------------
+   ACCIONES DEL FORMULARIO (CANCELAR Y GUARDAR)
+--------------------------------------------- */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  position: relative;
+  z-index: 1002;
+}
+
+.form-actions .cancel-btn,
+.form-actions .save-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-actions .cancel-btn {
+  background: #eee;
+  color: #333;
+}
+
+.form-actions .save-btn {
+  background: #FA812F;
+  color: #fff;
+}
+
+/* --------------------------------------------
+   AJUSTE RESPONSIVO DEL MODAL
+--------------------------------------------- */
+@media (min-width: 768px) {
+  .editarR-form {
+    width: 70%;
+    max-width: 600px;
+  }
+}
+
+

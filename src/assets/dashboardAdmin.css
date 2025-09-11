@@ -1,0 +1,395 @@
+/* Estilos generales con paleta de colores */
+:root {
+  --sidebar-bg: #2c3e50;
+  --sidebar-text: #fef3e2;
+  --sidebar-hover: #34495e;
+  --main-bg: #fef3e2;
+  --card-purple: #9b59b6;
+  --card-blue: #3498db;
+  --card-yellow: #f3c623;
+  --card-red: #fa812f;
+  --card-orange: #ffb22c;
+  --table-header: #2c3e50;
+  --table-row-odd: #ffffff;
+  --table-row-even: #fef3e2;
+  --profile-bg: #ffffff;
+  --profile-shadow: rgba(0, 0, 0, 0.1);
+  --text-dark: #2c3e50;
+  --text-light: #7f8c8d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: flex-start;
+  min-height: 160vh;
+  background-color: var(--main-bg);
+
+  transition: width 0.3s;
+
+  /* Sidebar icon */
+  .sidebar nav ul li a .icon {
+    margin-right: 12px;
+    font-size: 22px;
+
+
+    /* Menú desplegable */
+    .menu-toggle {
+      display: flex;
+      align-items: center;
+      padding: 20px 35px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: white;
+      font-size: 22px;
+    }
+
+    .menu-toggle:hover {
+      background-color: rgb(209, 207, 207);
+      color: #0d0d0d;
+    }
+
+    .menu-parent.open .submenu {
+      max-height: 200px;
+    }
+
+    /* Card hover efecto */
+    .card:hover {
+      transform: translateY(-3px);
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: var(--card-purple);
+      border-left-color: blue;
+    }
+
+
+
+
+
+
+
+
+
+    .card:hover {
+      transform: translateY(-3px);
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: var(--card-purple);
+      border-left-color: blue;
+    }
+
+    .card.blue {
+      border-left-color: greenyellow;
+    }
+
+
+
+    .card.red {
+      border-left-color: red;
+    }
+
+
+
+    .card-value {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: var(--card-red);
+    }
+
+
+
+    /* Grid del dashboard */
+    .dashboard-main {
+      margin-left: 90px;
+      box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.13);
+      transform: translateY(-2px) scale(1.01);
+      width: calc(100% - 50px);
+      z-index: 1;
+      transition: margin-left 0.3s;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 38px;
+    }
+
+
+
+
+
+
+
+    /* ...existing code... */
+
+    @media (max-width: 992px) {
+      .dashboard-main {
+        padding: 16px 0 16px 0;
+      }
+
+      .dashboard-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+      }
+    }
+
+
+
+    tr:nth-child(even) {
+      background-color: var(--table-row-even);
+    }
+
+    tr:nth-child(odd) {
+      background-color: var(--table-row-odd);
+    }
+
+    tr:hover {
+      background-color: orange;
+    }
+
+    a {
+      color: var(--card-red);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    a:hover {
+      color: var(--card-orange);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-main {
+        padding: 8px 0 8px 0;
+      }
+
+      .dashboard-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .dashboard-box {
+        min-width: 90vw;
+        max-width: 98vw;
+        padding: 12px 4vw 12px 4vw;
+      }
+    }
+
+    .profile-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background-color: var(--card-red);
+      /* Fondo naranja */
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: bold 18px sans-serif;
+      transition: 0.3s;
+      box-shadow: 0 2px 5px rgba(220, 18, 18, 0.1);
+    }
+
+    .profile-btn:hover {
+      background-color: var(--card-orange);
+      transform: scale(1.05);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: 55px;
+      right: 0;
+      width: 250px;
+      background: var(--profile-bg);
+      border-radius: 8px;
+      border: 1px solid #f3c62322;
+      box-shadow: 0 5px 15px var(--profile-shadow);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: 0.3s;
+    }
+
+    .profile-dropdown.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px;
+      border-bottom: 1px solid #f3c62333;
+    }
+
+    .profile-initial {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--card-red);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: bold 18px sans-serif;
+    }
+
+    .profile-initial.big {
+      width: 50px;
+      height: 50px;
+      font-size: 22px;
+      background: var(--card-orange);
+    }
+
+    .profile-user {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 15px;
+    }
+
+    .profile-dropdown ul {
+      list-style: none;
+      padding: 10px 0;
+    }
+
+    .profile-dropdown li a {
+      display: block;
+      padding: 12px 18px;
+      font-size: 14px;
+      color: var(--text-dark);
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .profile-dropdown li a:hover {
+      padding-left: 22px;
+      color: var(--card-red);
+      background: #f3c62311;
+    }
+
+    .profile-signout {
+      padding: 15px 18px;
+      border-top: 1px solid #f3c62333;
+    }
+
+    .profile-signout a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      color: var(--card-red);
+    }
+
+    .profile-signout a::before {
+      content: "→";
+      font-weight: bold;
+    }
+
+    /* Iconos */
+    .icon {
+      width: 22px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.1em;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .stats-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .sidebar {
+        width: 240px;
+      }
+
+      .dashboard-main {
+        margin-left: 240px;
+        width: calc(100% - 240px);
+        padding: 20px 0;
+      }
+
+      .sidebar nav ul li a {
+        padding: 12px 20px;
+      }
+
+      .submenu li a {
+        padding-left: 52px !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100px;
+      }
+
+      .sidebar-logo {
+        font-size: 0;
+        padding: 20px 0;
+      }
+
+      .sidebar-logo::after {
+        content: "R";
+        font-size: 24px;
+      }
+
+      .sidebar nav ul li a span:not(.icon) {
+        display: none;
+      }
+
+      .menu-toggle span:not(.icon) {
+        display: none;
+      }
+
+      .submenu li a {
+        padding-left: 20px !important;
+      }
+
+      .dashboard-main {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+        padding: 15px 0;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .stats-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-dropdown {
+        width: 220px;
+      }
+    }
+  }
+
+}
+
+/* Asegurar que el canvas del mapa ocupa el contenedor */
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+}
